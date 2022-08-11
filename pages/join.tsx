@@ -1,9 +1,14 @@
 import type { NextPage } from 'next';
+import SignUpForm from '../components/auth/SignUpForm';
 
 const Join: NextPage = () => {
     return (
         <>
-            <h3>회원가입 페이지</h3>
+            <section className="flex justify-center items-center w-screen h-screen">
+                <div className="flex flex-col items-center w-[450px] h-[600px] bg-white">
+                    <SignUpForm />
+                </div>
+            </section>
         </>
     );
 };

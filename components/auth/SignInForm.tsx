@@ -17,7 +17,14 @@ const SignInForm = () => {
     };
 
     const checkIsValid = () => {
-        return email.trim() != '' && email.includes('@') && pwd.length >= 8;
+        return (
+            email.trim() != '' &&
+            email.includes('@') &&
+            pwd.length >= 6 &&
+            pwd.length <= 16 &&
+            /[0-9]/.test(pwd) &&
+            /[a-zA-Z]/.test(pwd)
+        );
     };
 
     const logIn = async (email: string, pwd: string) => {
@@ -34,6 +41,7 @@ const SignInForm = () => {
                 'Authorization'
             ] = `Bearer ${accessToken}`;
             setIsAuthed(true);
+            console.log(isAuthed);
         } catch (err) {
             console.log(err);
         }
@@ -55,7 +63,9 @@ const SignInForm = () => {
                 onSubmit={onSubmit}
                 className="flex flex-col items-center w-full mb-[50px]"
             >
-                <h1 className="text-3xl mt-[50px] mb-[80px]">LOGIN</h1>
+                <h1 className="mt-[50px] mb-[80px] text-3xl font-semibold">
+                    LOGIN
+                </h1>
                 <div className="flex justify-center relative w-full mb-12">
                     <input
                         type="text"
