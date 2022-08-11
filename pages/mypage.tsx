@@ -1,48 +1,20 @@
-import styled from 'styled-components';
 import UserProfile from '../components/user/UserProfile';
+
 const Mypage = () => {
     return (
         <>
-            <ProfileConatiner>
-                <ProfileWrapper>
-                    <TitleWrapper>
-                        <h1>프로필 정보</h1>
-                    </TitleWrapper>
+            <section className="flex justify-center items-center w-screen h-screen">
+                <div className="flex flex-col items-center w-[720px] h-[480px] rounded-xl">
+                    <div className="flex items-end w-[95%] h-24 border-b-[3px] border-solid border-[#222]">
+                        <h1 className="ml-5 mb-4 text-2xl font-semibold">
+                            프로필 정보
+                        </h1>
+                    </div>
                     <UserProfile />
-                </ProfileWrapper>
-            </ProfileConatiner>
+                </div>
+            </section>
         </>
     );
 };
 
 export default Mypage;
-
-const ProfileConatiner = styled.section`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    height: 100vh;
-`;
-
-const ProfileWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 720px;
-    height: 480px;
-    border-radius: 10px;
-`;
-
-const TitleWrapper = styled.div`
-    display: flex;
-    align-items: flex-end;
-    width: 95%;
-    height: 90px;
-    & > h1 {
-        margin-left: 20px;
-        font-size: 1.5rem;
-        font-weight: 550;
-    }
-    border-bottom: 3px solid #222;
-`;

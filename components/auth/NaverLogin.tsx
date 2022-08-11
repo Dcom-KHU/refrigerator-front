@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import NaverSVG from '/public/logo_naver.svg';
-import { SignInBtn } from '../buttons/SignInBtn';
 
 const NaverLogin = () => {
     const naverRef = useRef<HTMLDivElement>(null);
@@ -36,7 +35,10 @@ const NaverLogin = () => {
                 id="naverIdLogin"
                 style={{ display: 'none' }}
             ></div>
-            <NaverLoginBtn onClick={onClick}>
+            <button
+                onClick={onClick}
+                className="flex justify-center items-center relative w-4/5 h-[60px] bg-white border-[1px] border-solid border-[#d5d5d5] rounded-2xl mt-2 font-medium cursor-pointer"
+            >
                 <NaverSVG
                     width={32}
                     height={32}
@@ -46,14 +48,9 @@ const NaverLogin = () => {
                     }}
                 />
                 네이버로 시작하기
-            </NaverLoginBtn>
+            </button>
         </>
     );
 };
 
 export default NaverLogin;
-
-const NaverLoginBtn = styled(SignInBtn)`
-    border: 1px solid #d5d5d5;
-    background-color: #fff;
-`;
