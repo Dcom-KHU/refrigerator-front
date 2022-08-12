@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { atom, selector } from 'recoil';
 import { v1 } from 'uuid';
-import UserInfo from '../components/user/UserInfo';
 
 interface User {
     id: number;
@@ -23,7 +22,7 @@ export const userState = atom<User>({
     default: {
         id: -1,
         email: 'test@test.com',
-        pwd: 'testPwd',
+        pwd: 'testPwd1',
         name: '테스트이름',
         nickName: '테스트닉네임',
         point: 0,

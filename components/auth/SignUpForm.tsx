@@ -18,6 +18,7 @@ const SignUpForm = () => {
         if (event.target.id == 'email') setEmail(value);
         else setPwd(value);
     };
+
     const checkIsValid = () => {
         return (
             email.trim() != '' &&

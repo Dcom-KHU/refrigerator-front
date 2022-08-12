@@ -73,7 +73,7 @@ const ChangeNickName = () => {
 
                 {!isValid && (
                     <span className="ml-3 text-xs text-red-500">
-                        올바른 이름을 입력해주세요.(2~8자)
+                        올바른 닉네임을 입력해주세요. (2~8자)
                     </span>
                 )}
             </div>

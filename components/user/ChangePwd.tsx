@@ -30,7 +30,12 @@ const ChangePwd = () => {
     };
 
     useEffect(() => {
-        6 <= newPwd.length ? setIsValid(true) : setIsValid(false);
+        newPwd.length >= 6 &&
+        newPwd.length <= 16 &&
+        /[0-9]/.test(newPwd) &&
+        /[a-zA-Z]/.test(newPwd)
+            ? setIsValid(true)
+            : setIsValid(false);
     }, [newPwd, isValid, setIsValid]);
 
     return (
@@ -74,7 +79,7 @@ const ChangePwd = () => {
             </div>
             {!isValid && (
                 <span className="text-xs text-red-500 -mt-12 -mb-5">
-                    비밀번호는 6자리 이상이어야 합니다.
+                    올바른 비밀번호를 입력해주세요. (영문, 숫자 조합 6~16자)
                 </span>
             )}
         </>

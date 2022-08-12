@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import styled from 'styled-components';
 import NaverSVG from '/public/logo_naver.svg';
 
 const NaverLogin = () => {
