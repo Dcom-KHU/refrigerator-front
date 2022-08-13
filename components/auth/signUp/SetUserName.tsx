@@ -6,7 +6,8 @@ interface propType {
     setName: React.Dispatch<React.SetStateAction<string>>;
     setNickName: React.Dispatch<React.SetStateAction<string>>;
 }
-const SetUserInfo = (props: propType) => {
+
+const SetUserName = (props: propType) => {
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         if (event.target.id == 'name') props.setName(value);
@@ -51,4 +52,4 @@ const SetUserInfo = (props: propType) => {
     );
 };
 
-export default React.memo(SetUserInfo);
+export default React.memo(SetUserName);

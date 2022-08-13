@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
-import { isAuth } from '../../store/authState';
+import { isAuth } from '../../../store/authState';
+
 const SignInForm = () => {
     const router = useRouter();
     const [email, setEmail] = useState('');

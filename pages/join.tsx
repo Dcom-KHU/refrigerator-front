@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import SignUpForm from '../components/auth/SignUpForm';
+import SignUpForm from '../components/auth/signUp/SignUpForm';
 
 const Join: NextPage = () => {
     return (
