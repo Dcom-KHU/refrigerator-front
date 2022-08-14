@@ -7,9 +7,8 @@ const Header:NextPage = () => {
 
     return  (
 
-    <nav className="bg-gray-100">
+    <nav className= "fixed w-full z-10 pin-t bg-gray-100">
       <div className="max-w-6xl mx-auto px-4">
-
         <div className="flex space-x-4">
 
           {/* 메뉴 */}
@@ -31,7 +30,7 @@ const Header:NextPage = () => {
 
           {/* 메뉴2 */}
           <div className = 'hidden md:flex items-center space-x-1'>
-            <a href='/myrefrigerator' className="py-2 px-3 bg-red-200 hover:bg-red-100 text-red-900 hover:text-red-800 rounded transition duration-300">
+            <a href='/login' className="py-2 px-3 bg-red-200 hover:bg-red-100 text-red-900 hover:text-red-800 rounded transition duration-300">
             로그인
             </a>
         </div>
