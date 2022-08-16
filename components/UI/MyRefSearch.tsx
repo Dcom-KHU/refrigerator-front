@@ -8,14 +8,14 @@ const MyRefSearch = () => {
 
     return (
         <>
-            <div className="flex justify-center items-center w-2/3 ms:w-full h-24">
+            <div className="flex justify-center items-center w-[99%] ms:w-full h-24">
                 <form className="flex relative items-center w-72">
                     <input
                         value={keyword}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             setKeyword(e.target.value);
                         }}
-                        className="peer w-full px-10 py-2 rounded-3xl outline-none"
+                        className="peer w-full px-10 py-2 rounded-3xl outline-none border-[1.5px] focus:border-[#237bff]"
                     ></input>
                     <SearchSVG
                         width={20}

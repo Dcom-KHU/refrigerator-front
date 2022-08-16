@@ -8,10 +8,12 @@ const MyRefriger: NextPage = () => {
 
     return (
         <>
-            <div className="flex justify-center items-end w-screen h-screen -mt-10">
-                <div className="flex flex-col justify-between items-center w-[90%] lg:w-3/5 h-3/4 rounded-xl bg-[#ededed] shadow-xl">
-                    <MyRefSearch />
-                    <MyIngrediantsList data={data} />
+            <div className="flex flex-col justify-center items-end w-screen h-screen bg-[#ededed]">
+                <div className="flex justify-center items-end w-screen h-[95%] ">
+                    <div className="flex flex-col justify-between items-center w-[90%] lg:w-3/5 h-4/5 rounded-xl bg-white shadow-xl">
+                        <MyRefSearch />
+                        <MyIngrediantsList data={data} />
+                    </div>
                 </div>
             </div>
         </>

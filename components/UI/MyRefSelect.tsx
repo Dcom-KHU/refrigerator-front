@@ -13,10 +13,8 @@ const MyRefSelect = (props: propType) => {
                     onClick={() => {
                         props.setSelected(false);
                     }}
-                    className={`flex justify-center items-center w-1/2 rounded-t-2xl cursor-pointer ${
-                        !props.selected
-                            ? 'bg-[#fff] shadow-2xl'
-                            : 'hover:bg-[#dbdbdb]'
+                    className={`flex justify-center items-center w-1/2 rounded-t-2xl border-[1.5px] border-b-0 cursor-pointer ${
+                        props.selected && 'bg-[#f1f1f1] hover:bg-[#f7f7f7]'
                     } `}
                 >
                     <h2 className="font-semibold">나의 냉장고</h2>
@@ -25,10 +23,8 @@ const MyRefSelect = (props: propType) => {
                     onClick={() => {
                         props.setSelected(true);
                     }}
-                    className={`flex justify-center items-center w-1/2 rounded-t-2xl cursor-pointer ${
-                        props.selected
-                            ? 'bg-[#fff] shadow-2xl'
-                            : 'hover:bg-[#dbdbdb]'
+                    className={`flex justify-center items-center w-1/2 rounded-t-2xl border-[1.5px] border-b-0 cursor-pointer ${
+                        !props.selected && 'bg-[#f1f1f1] hover:bg-[#f7f7f7]'
                     }`}
                 >
                     <h2 className="font-semibold text-red-500">

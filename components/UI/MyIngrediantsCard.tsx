@@ -51,7 +51,7 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
                     bb={item.bb}
                 />
             )}
-            <div className="flex justify-between items-center w-full h-full bg-white border-t-none border-b-2">
+            <div className="flex justify-between items-center w-full h-full border-[1.5px] border-t-0">
                 <div className="flex justify-center w-1/4 md:1/5 ml-2 lg:ml-10 md:ml-4 text-xs sm:text-base">
                     {item.name}
                 </div>
