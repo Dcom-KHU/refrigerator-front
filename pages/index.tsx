@@ -7,19 +7,20 @@ import Head from 'next/head';
 const Home: NextPage = () => {
 
     return (
-    <div>
+        <div>
         <Head>
             <title>Recipes</title>
         </Head>
 
         <Header /> 
-        <br/>
+        
         <div className="grid place-items-center">
         <TodaysRecipe menu='menu' />
         <SearchRecipe/>
         </div>
     </div>
-    )
+
+    );
 };
 
 export default Home;
