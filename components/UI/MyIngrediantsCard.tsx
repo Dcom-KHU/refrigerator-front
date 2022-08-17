@@ -20,27 +20,30 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
     const [isModifying, setIsModifying] = useRecoilState(isModifyingState);
     const [showModal, setShowModal] = useState(false);
 
+    //리스트에 재료정보 수정
     const onClick = () => {
-        if (isModifying) return;
+        if (isModifying) return; //수정중이면 return
         if (!showModal) {
             setShowModal(true);
             setIsModifying(true);
         } else {
+            //모달이 사라질 때 animation을 주기위한 로직
             setIsModifying(false);
             setTimeout(() => {
                 setShowModal(false);
             }, 200);
         }
     };
-
+    //리스트에서 재료 삭제
     const deleteHandler = () => {
+        if (isModifying) return;
         const filtered = data.filter((now) => now.id !== item.id);
         setData(filtered);
     };
 
     return (
         <>
-            {showModal && (
+            {showModal && ( //재료 수정 모달
                 <AddIngrediantModal
                     isShow={isModifying}
                     setIsShow={setIsModifying}
@@ -67,13 +70,13 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
                     <div className="flex justify-center w-3/4 z-10">
                         <button
                             onClick={onClick}
-                            className="px-2 py-1 md:px-3 md:py-2 border rounded-lg sm:rounded-xl text-xs md:text-sm text-white bg-[#237bff] hover:bg-[#0d6efd] mr-3"
+                            className="px-2 py-1 md:px-3 md:py-2 border rounded-lg sm:rounded-xl text-xs md:text-sm bg-[#f1f1f1] hover:bg-[#f6f6f6] mr-3"
                         >
                             수정
                         </button>
                         <button
                             onClick={deleteHandler}
-                            className="px-2 py-1 md:px-3 md:py-2 border rounded-lg sm:rounded-xl text-xs md:text-sm text-white bg-[#237bff] hover:bg-[#0d6efd] mr-2 md:mr-0"
+                            className="px-2 py-1 md:px-3 md:py-2 border rounded-lg sm:rounded-xl text-xs md:text-sm bg-[#f1f1f1] hover:bg-[#f6f6f6] mr-2 md:mr-0"
                         >
                             삭제
                         </button>

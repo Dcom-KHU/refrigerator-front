@@ -3,6 +3,7 @@ import MyRefSearch from '../components/UI/MyRefSearch';
 import MyIngrediantsList from '../components/UI/MyIngrediantsList';
 import { myIngrediants } from '../store/myIngrediants';
 import { useRecoilValue } from 'recoil';
+
 const MyRefriger: NextPage = () => {
     const data = useRecoilValue(myIngrediants);
 

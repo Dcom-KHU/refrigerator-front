@@ -13,7 +13,7 @@ interface propType {
     bb: string;
 }
 
-//재료 추가 or 변경시 나오는 모달
+//재료 추가 or 수정시 나오는 모달
 const AddIngrediantModal = (props: propType) => {
     const [data, setData] = useRecoilState(myIngrediants);
     const [name, setName] = useState(props.name);
@@ -30,7 +30,7 @@ const AddIngrediantModal = (props: propType) => {
         try {
             if (name.trim() == '') throw new Error('잘못된 이름입니다.');
             if (quantity.trim() == '') throw new Error('잘못된 수량입니다.');
-            //추가일 경우
+            //추가버튼 눌렀을 때
             if (!props.isModify) {
                 const id = v1();
                 const newIngrediant = {
@@ -39,8 +39,10 @@ const AddIngrediantModal = (props: propType) => {
                     bb,
                     quantity,
                 };
+                //새로운 재료 데이터에 추가
                 setData([...data, newIngrediant]);
             } else {
+                //수정 버튼 눌렀을 때
                 const newData = data.map((item) =>
                     props.id === item.id ? { id: props.id, name, bb } : item
                 );
@@ -54,6 +56,7 @@ const AddIngrediantModal = (props: propType) => {
     };
 
     const unMount = () => {
+        //모달 사라질 때 애니메이션용 setTimeout
         props.setIsShow(false);
         setTimeout(() => {
             props.setShowModal(false);

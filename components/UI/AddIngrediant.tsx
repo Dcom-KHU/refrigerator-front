@@ -24,7 +24,7 @@ const AddIngrediant = () => {
     return (
         <>
             {showModal && (
-                <AddIngrediantModal
+                <AddIngrediantModal //재료 추가 모달
                     isShow={isAdding}
                     setIsShow={setIsAdding}
                     setShowModal={setShowModal}
@@ -35,7 +35,7 @@ const AddIngrediant = () => {
                 />
             )}
             <div className="flex absolute justify-center items-center w-full h-14 bottom-0 rounded-b-xl">
-                <div className="sticky self-center mb-5 rounded-full bg-[#237bff] hover:bg-[#0d6efd] cursor-pointer">
+                <div className="sticky self-center mb-5 rounded-full bg-[#ededed] hover:bg-[#e4e4e4] cursor-pointer">
                     <Plus width={45} height={45} onClick={onClick} />
                 </div>
             </div>
