@@ -13,7 +13,7 @@ const Home: NextPage = () => {
         </Head>
 
         <Header /> 
-        
+        <br/>
         <div className="grid place-items-center">
         <TodaysRecipe menu='menu' />
         <SearchRecipe/>

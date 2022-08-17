@@ -3,20 +3,21 @@ import Image from "next/image";
 
 const TodaysRecipe: React.FC<{menu:string}> = (props) => {
     return (
-    <div className=" px-5 py-10 mx-auto">
-      <p className="font-mono py-px font-semibold">오늘의 추천 레시피</p>
+        
+    <div className="pt-20  px-5 py-10 mx-auto ">
+        <div className="flex flex-col my-auto items-center mx-3">
+      <p className="font-mono py-px font-semibold text-2xl items-center">오늘의 추천 레시피</p>
+      </div>
+
         <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
-        <div className="grid place-items-center">
-            <div className="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl ">
-            </div >
-                  
+            <div className="grid place-items-center">
     <div className="md:flex">
          <div className="md:shrink-0">
          <div id="default-carousel" className="relative" data-carousel="static">
  
     <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
-            <img className="h-48 w-full object-cover md:h-full md:full" src="https://i.pinimg.com/474x/6e/26/4c/6e264cbcbce8ae7a39ed463f4070c77b.jpg" />
-        </div>
+        <img className="h-48 w-full object-cover md:h-full md:full" src="https://i.pinimg.com/474x/6e/26/4c/6e264cbcbce8ae7a39ed463f4070c77b.jpg" />
+         </div>
 
     <div className="p-8">
       <div className="uppercase tracking-wide text-sm text-grey-500 font-semibold">떡볶이</div>
@@ -48,6 +49,7 @@ const TodaysRecipe: React.FC<{menu:string}> = (props) => {
 </div>
 </div>
 </div>
+
 
 
    
