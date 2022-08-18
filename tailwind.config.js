@@ -9,7 +9,7 @@ module.exports = {
             animation: {
                 fadeIn: 'fadeIn 0.2s ease forwards',
                 fadeOut: 'fadeOut 0.2s ease forwards',
-                liAdd: 'liAdd 0.4s linear forwards',
+                liAdd: 'liAdd 0.2s linear forwards',
                 liDel: 'liDel 0.3s ease-in forwards',
             },
             keyframes: {

@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { myIngrediants } from '../../store/myIngrediants';
 import { isModifyingState } from '../../store/myRefrigerStates';
+import TrashSVG from '/public/trash.svg';
+import Edit from '/public/edit.svg';
 
 interface ingrediant {
     id: string;
@@ -81,25 +83,22 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
         <>
             <div
                 ref={divRef}
-                className={`flex justify-between items-center w-full h-full border-[1.5px] border-t-0 ${
-                    thisModifying &&
-                    'border-[#a0a0a0] border-[1.5px] border-t-[1.5px] rounded-xl'
-                }`}
+                className="flex justify-between items-center w-full h-full border-b-[1.5px] border-t-0"
             >
-                <div className="flex justify-center w-1/4 md:1/5 ml-2 lg:ml-10 md:ml-4 text-xs sm:text-base">
+                <div className="flex justify-center w-1/4 ml-2 lg:ml-10 md:ml-4 text-xs sm:text-base">
                     {thisModifying ? (
                         <input
                             id="name"
                             value={newName}
                             onChange={onChange}
-                            className="w-1/2 h-10 border-2 border-blue-500 rounded-md text-center"
+                            className="w-[70%] h-8 rounded-lg lg:w-1/2 lg:h-10 lg:rounded-2xl border-2 border-blue-500 text-center outline-none"
                         ></input>
                     ) : (
                         `${item.name}`
                     )}
                 </div>
                 <div
-                    className={`flex justify-end w-2/5 mr-5 md:mr-2 text-sm ${
+                    className={`flex justify-end w-2/5 mr-5 md:mr-2 text-xs md:text-sm ${
                         isDanger && 'text-red-400'
                     }`}
                 >
@@ -109,7 +108,7 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
                             type="date"
                             value={newBB}
                             onChange={onChange}
-                            className="w-1/2 h-10 border-2 border-blue-500 rounded-md text-center"
+                            className="w-[95%] md:w-1/2 h-8 lg:h-10 rounded-lg lg:rounded-2xl border-2 border-blue-500  text-center outline-none"
                         ></input>
                     ) : (
                         `${item.bb}`
@@ -119,15 +118,19 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
                     <div className="flex justify-center w-3/4 z-10">
                         <button
                             onClick={onClick}
-                            className="px-2 py-1 md:px-3 md:py-2 border rounded-lg sm:rounded-xl text-xs md:text-sm bg-[#f1f1f1] hover:bg-[#f6f6f6] mr-3"
+                            className="px-[6px] py-[3px] md:px-3 md:py-2 border-[1.5px] rounded-lg sm:rounded-xl text-xs md:text-sm hover:bg-[#f6f6f6] mr-3"
                         >
-                            {thisModifying ? '취소' : '수정'}
+                            {thisModifying ? (
+                                '취소'
+                            ) : (
+                                <Edit width={18} fill="#454545" />
+                            )}
                         </button>
                         <button
                             onClick={completeHandler}
-                            className="px-2 py-1 md:px-3 md:py-2 border rounded-lg sm:rounded-xl text-xs md:text-sm bg-[#f1f1f1] hover:bg-[#f6f6f6] mr-2 md:mr-0"
+                            className="px-[6px] py-[3px] md:px-3 md:py-2 border-[1.5px] rounded-lg sm:rounded-xl text-xs md:text-sm hover:bg-[#f6f6f6] mr-2 md:mr-0"
                         >
-                            {thisModifying ? '완료' : '삭제'}
+                            {thisModifying ? '완료' : <TrashSVG width={20} />}
                         </button>
                     </div>
                 </div>
@@ -136,4 +139,4 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
     );
 };
 
-export default MyIngrediantsCard;
+export default React.memo(MyIngrediantsCard);

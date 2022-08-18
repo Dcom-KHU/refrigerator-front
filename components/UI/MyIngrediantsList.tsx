@@ -17,25 +17,17 @@ interface propType {
 
 const MyIngrediantsList = ({ data }: propType) => {
     const [selected, setSelected] = useState(false);
-    const [dangerList, setDangerList] = useState<dataType[]>([]);
     //재료 추가시 애니메이션용 ref
     const ulRef = useRef<HTMLUListElement>(null);
     //재료 추가시 애니메이션용 state
     const [justAdded, setJustAdded] = useRecoilState(justAddedState);
     const keyword = useRecoilValue(myRefSearchState);
 
-    const isDangerous = (now: Date, bb: string): boolean => {
+    const isDangerous = (today: Date, bb: string): boolean => {
         //유통기한이 3일 이하로 남았는지 확인
-        const diff = new Date(bb).getTime() - now.getTime();
+        const diff = new Date(bb).getTime() - today.getTime();
         return diff / (1000 * 60 * 60 * 24) <= 3;
     };
-
-    const setDangerousData = useCallback(() => {
-        const now = new Date();
-        //유통기한이 3일 이하로 남은 것들만 fiter해서 dagerList에 넣음
-        const newLst = data.filter((items) => isDangerous(now, items.bb));
-        setDangerList(newLst);
-    }, [data]);
 
     //방금 아이템이 추가됐다면 0.4초간 애니메이션 적용 후 삭제
     const checkJustAdded = useCallback(() => {
@@ -46,22 +38,21 @@ const MyIngrediantsList = ({ data }: propType) => {
             setTimeout(() => {
                 (ulRef.current as HTMLUListElement).className = temp;
                 setJustAdded(false);
-            }, 400);
+            }, 200);
         }
     }, [justAdded, setJustAdded]);
 
     useEffect(() => {
-        setDangerousData();
         checkJustAdded();
-    }, [setDangerousData, checkJustAdded]);
+    }, [checkJustAdded]);
 
     return (
         <>
-            <div className="flex flex-col self-center relative w-[99%] h-3/4">
+            <div className="flex relative flex-col self-center w-[99%] h-3/4">
                 <MyRefSelect selected={selected} setSelected={setSelected} />
                 <ul
                     ref={ulRef}
-                    className="flex flex-col items-center w-full h-full bg-white rounded-b-xl overflow-y-scroll"
+                    className="flex flex-col items-center w-full h-full bg-white border-x-[1.5px] rounded-b-xl overflow-y-scroll"
                 >
                     {!selected && //나의 냉장고 선택했을 때
                         data.map((item) =>
@@ -90,10 +81,25 @@ const MyIngrediantsList = ({ data }: propType) => {
                                 </li>
                             )
                         )}
-                    {selected && //유통기한 임박 체크 했을 때
-                        dangerList.map((item) =>
-                            keyword != '' ? (
-                                item.name.includes(keyword) && (
+                    {selected && //유통기한 임박 체크 했을 때 유통기한 3일이하인것만 filter 후 map
+                        data
+                            .filter((items) =>
+                                isDangerous(new Date(), items.bb)
+                            )
+                            .map((item) =>
+                                keyword != '' ? (
+                                    item.name.includes(keyword) && (
+                                        <li
+                                            key={item.id}
+                                            className="w-full min-h-[50px] md:min-h-[100px]"
+                                        >
+                                            <MyIngrediantsCard
+                                                item={item}
+                                                isDanger={true}
+                                            />
+                                        </li>
+                                    )
+                                ) : (
                                     <li
                                         key={item.id}
                                         className="w-full min-h-[50px] md:min-h-[100px]"
@@ -104,18 +110,7 @@ const MyIngrediantsList = ({ data }: propType) => {
                                         />
                                     </li>
                                 )
-                            ) : (
-                                <li
-                                    key={item.id}
-                                    className="w-full min-h-[50px] md:min-h-[100px]"
-                                >
-                                    <MyIngrediantsCard
-                                        item={item}
-                                        isDanger={true}
-                                    />
-                                </li>
-                            )
-                        )}
+                            )}
                 </ul>
                 <AddIngrediant />
             </div>

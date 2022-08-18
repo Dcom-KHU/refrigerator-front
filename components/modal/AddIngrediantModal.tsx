@@ -87,13 +87,13 @@ const AddIngrediantModal = (props: propType) => {
                 <div className="flex justify-center items-end mt-4 -mb-10">
                     <button
                         onClick={unMount}
-                        className="px-2 py-1 mr-2 border-none bg-[#b7b7b7] rounded-xl hover:text-white"
+                        className="px-2 py-1 mr-2 border-none bg-[#cecece] rounded-xl hover:text-white"
                     >
                         취소
                     </button>
                     <button
                         onClick={onSubmit}
-                        className="px-2 py-1 mr-2 border-none bg-[#b7b7b7] rounded-xl hover:text-white"
+                        className="px-2 py-1 mr-2 border-none bg-[#cecece] rounded-xl hover:text-white"
                     >
                         추가
                     </button>
