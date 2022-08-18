@@ -9,6 +9,8 @@ module.exports = {
             animation: {
                 fadeIn: 'fadeIn 0.2s ease forwards',
                 fadeOut: 'fadeOut 0.2s ease forwards',
+                liAdd: 'liAdd 0.4s linear forwards',
+                liDel: 'liDel 0.3s ease-in forwards',
             },
             keyframes: {
                 fadeIn: {
@@ -18,6 +20,14 @@ module.exports = {
                 fadeOut: {
                     '0%': { transform: 'scale(1)' },
                     '100%': { transform: 'scale(0)' },
+                },
+                liAdd: {
+                    '0%': { transform: 'translateY(-100%)' },
+                    '100%': { transform: 'translateY(0)' },
+                },
+                liDel: {
+                    '0%': { transform: 'translateX(0)' },
+                    '100%': { transform: 'translateX(-100%)' },
                 },
             },
         },
@@ -38,5 +48,10 @@ module.exports = {
             // => @media (min-width: 1536px) { ... }
         },
     },
-    plugins: [],
+    plugins: [
+        function ({ addVariant }) {
+            addVariant('child', '& > *');
+            addVariant('child-hover', '& > *:hover');
+        },
+    ],
 };

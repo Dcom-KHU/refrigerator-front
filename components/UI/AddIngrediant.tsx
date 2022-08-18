@@ -1,23 +1,29 @@
-import { useState } from 'react';
-import { isModifyingState } from '../../store/myRefrigerStates';
-import { useRecoilState } from 'recoil';
-import AddIngrediantModal from '../modal/AddIngrediantModal';
 import Plus from '/public/plus.svg';
+import { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { isModifyingState } from '../../store/myRefrigerStates';
+import AddIngrediantModal from '../modal/AddIngrediantModal';
 
 const AddIngrediant = () => {
     const [showModal, setShowModal] = useState(false);
-    const [isAdding, setIsAdding] = useRecoilState(isModifyingState);
+    const [isShow, setIsShow] = useState(false);
+    const [isModifying, setIsModifying] = useRecoilState(isModifyingState);
 
     const onClick = () => {
-        if (isAdding) return;
-        if (!showModal) {
-            setShowModal(true);
-            setIsAdding(true);
+        if (isModifying) {
+            if (showModal) {
+                setIsModifying(false);
+                setIsShow(false);
+                setTimeout(() => {
+                    setShowModal(false);
+                }, 200);
+            } else return;
         } else {
-            setIsAdding(false);
-            setTimeout(() => {
-                setShowModal(false);
-            }, 200);
+            if (!showModal) {
+                setShowModal(true);
+                setIsShow(true);
+                setIsModifying(true);
+            }
         }
     };
 
@@ -25,13 +31,9 @@ const AddIngrediant = () => {
         <>
             {showModal && (
                 <AddIngrediantModal //재료 추가 모달
-                    isShow={isAdding}
-                    setIsShow={setIsAdding}
+                    isShow={isShow}
+                    setIsShow={setIsShow}
                     setShowModal={setShowModal}
-                    isModify={false}
-                    id={''}
-                    name={''}
-                    bb={new Date().toJSON().split('T')[0]}
                 />
             )}
             <div className="flex absolute justify-center items-center w-full h-14 bottom-0 rounded-b-xl">

@@ -15,7 +15,7 @@ const MyRefSearch = () => {
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             setKeyword(e.target.value);
                         }}
-                        className="peer w-full px-10 py-2 rounded-3xl outline-none border-[1.5px] focus:border-[#237bff]"
+                        className="peer w-full px-10 py-2 rounded-3xl outline-none border-[1.5px]"
                     ></input>
                     <SearchSVG
                         width={20}

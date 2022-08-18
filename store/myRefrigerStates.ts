@@ -12,3 +12,9 @@ export const isModifyingState = atom<boolean>({
     key: `isModifying/${v1()}`,
     default: false,
 });
+
+//방금 아이템이 추가 됐는지 확인하는 state, css 애니메이션용
+export const justAddedState = atom<boolean>({
+    key: `justAddedState/${v1()}`,
+    default: false,
+});

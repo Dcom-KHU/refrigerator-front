@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { myRefSearchState } from '../../store/myRefrigerStates';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import { myRefSearchState, justAddedState } from '../../store/myRefrigerStates';
 import MyIngrediantsCard from './MyIngrediantsCard';
 import AddIngrediant from './AddIngrediant';
 import MyRefSelect from './MyRefSelect';
@@ -18,7 +18,10 @@ interface propType {
 const MyIngrediantsList = ({ data }: propType) => {
     const [selected, setSelected] = useState(false);
     const [dangerList, setDangerList] = useState<dataType[]>([]);
-
+    //재료 추가시 애니메이션용 ref
+    const ulRef = useRef<HTMLUListElement>(null);
+    //재료 추가시 애니메이션용 state
+    const [justAdded, setJustAdded] = useRecoilState(justAddedState);
     const keyword = useRecoilValue(myRefSearchState);
 
     const isDangerous = (now: Date, bb: string): boolean => {
@@ -27,18 +30,39 @@ const MyIngrediantsList = ({ data }: propType) => {
         return diff / (1000 * 60 * 60 * 24) <= 3;
     };
 
-    useEffect(() => {
+    const setDangerousData = useCallback(() => {
         const now = new Date();
         //유통기한이 3일 이하로 남은 것들만 fiter해서 dagerList에 넣음
         const newLst = data.filter((items) => isDangerous(now, items.bb));
         setDangerList(newLst);
-    }, [data, setDangerList]);
+    }, [data]);
+
+    //방금 아이템이 추가됐다면 0.4초간 애니메이션 적용 후 삭제
+    const checkJustAdded = useCallback(() => {
+        if (justAdded) {
+            const temp = (ulRef.current as HTMLUListElement).className;
+            (ulRef.current as HTMLUListElement).className +=
+                ' child:animate-liAdd';
+            setTimeout(() => {
+                (ulRef.current as HTMLUListElement).className = temp;
+                setJustAdded(false);
+            }, 400);
+        }
+    }, [justAdded, setJustAdded]);
+
+    useEffect(() => {
+        setDangerousData();
+        checkJustAdded();
+    }, [setDangerousData, checkJustAdded]);
 
     return (
         <>
             <div className="flex flex-col self-center relative w-[99%] h-3/4">
                 <MyRefSelect selected={selected} setSelected={setSelected} />
-                <ul className="flex flex-col items-center w-full h-full rounded-b-xl overflow-y-scroll">
+                <ul
+                    ref={ulRef}
+                    className="flex flex-col items-center w-full h-full bg-white rounded-b-xl overflow-y-scroll"
+                >
                     {!selected && //나의 냉장고 선택했을 때
                         data.map((item) =>
                             keyword != '' ? ( //search input에 값이 들어있으면
