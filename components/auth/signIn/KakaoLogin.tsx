@@ -7,14 +7,14 @@ const KakaoLogin = () => {
     return (
         <>
             <Link href={KakaoLoginUrl}>
-                <button className="flex justify-center items-center relative w-4/5 h-[60px] bg-white border-[1px] border-solid border-[#d5d5d5] rounded-2xl mt-3 font-medium cursor-pointer">
+                <div className="flex justify-center items-center relative w-4/5 h-[60px] bg-white border-[1px] border-solid border-[#d5d5d5] rounded-2xl mt-3 font-medium cursor-pointer">
                     <KakaoImg
                         width={40}
                         height={40}
                         className="absolute left-3"
                     />
                     카카오로 시작하기
-                </button>
+                </div>
             </Link>
         </>
     );

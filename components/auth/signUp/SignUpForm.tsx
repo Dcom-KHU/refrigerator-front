@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { isAuth } from '../../../store/authState';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import SetUserInfo from './SetUserInfo';
@@ -12,20 +10,14 @@ const SignUpForm = () => {
     const [pwd, setPwd] = useState('');
     const [name, setName] = useState('');
     const [nickName, setnickName] = useState('');
-    const [isAuthed, setIsAuthed] = useRecoilState(isAuth);
 
-    const checkIsValid = () => {
-        return (
-            email.trim() != '' &&
-            email.includes('@') &&
-            pwd.length >= 6 &&
-            pwd.length <= 16 &&
-            /[0-9]/.test(pwd) &&
-            /[a-zA-Z]/.test(pwd) &&
-            2 <= nickName.length &&
-            nickName.length <= 8
-        );
-    };
+    const [emailIsValid, setEmailIsValid] = useState(false);
+    const [pwdIsValid, setPwdIsValid] = useState(false);
+    const [nickNameIsValid, setNickNameIsValid] = useState(false);
+
+    const checkIsValid = useCallback(() => {
+        return emailIsValid && pwdIsValid && nickNameIsValid;
+    }, [emailIsValid, pwdIsValid, nickNameIsValid]);
 
     const signUp = async (
         email: string,
@@ -61,6 +53,10 @@ const SignUpForm = () => {
         router.replace('/');
     };
 
+    useEffect(() => {
+        checkIsValid();
+    }, [checkIsValid]);
+
     return (
         <>
             <form
@@ -75,12 +71,18 @@ const SignUpForm = () => {
                     setEmail={setEmail}
                     pwd={pwd}
                     setPwd={setPwd}
+                    emailIsValid={emailIsValid}
+                    setEmailIsValid={setEmailIsValid}
+                    pwdIsValid={pwdIsValid}
+                    setPwdIsValid={setPwdIsValid}
                 />
                 <SetUserName
                     name={name}
                     setName={setName}
                     nickName={nickName}
                     setNickName={setnickName}
+                    nickNameIsValid={nickNameIsValid}
+                    setNickNameIsValid={setNickNameIsValid}
                 />
                 <button
                     type="submit"

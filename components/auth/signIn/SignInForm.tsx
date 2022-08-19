@@ -19,8 +19,8 @@ const SignInForm = () => {
 
     const checkIsValid = () => {
         return (
-            email.trim() != '' &&
             email.includes('@') &&
+            email.includes('.') &&
             pwd.length >= 6 &&
             pwd.length <= 16 &&
             /[0-9]/.test(pwd) &&

@@ -1,23 +1,14 @@
 import NaverLogin from './NaverLogin';
-import styled from 'styled-components';
 import KakaoLogin from './KakaoLogin';
 const SocialLogins = () => {
     return (
         <>
-            <SocialLoginsWrapper>
+            <div className="flex flex-col items-center w-full -mt-[10px]">
                 <NaverLogin />
                 <KakaoLogin />
-            </SocialLoginsWrapper>
+            </div>
         </>
     );
 };
 
 export default SocialLogins;
-
-const SocialLoginsWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-    margin-top: -10px;
-`;

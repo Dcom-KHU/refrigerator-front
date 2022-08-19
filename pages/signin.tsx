@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
-import SignInForm from '../../components/auth/signIn/SignInForm';
-import SocialLogins from '../../components/auth/signIn/SocialLogins';
+import SignInForm from '../components/auth/signIn/SignInForm';
+import SocialLogins from '../components/auth/signIn/SocialLogins';
 
 const SignIn: NextPage = () => {
     return (
