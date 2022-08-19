@@ -12,18 +12,18 @@ const MyRefSelect = (props: propType) => {
                     onClick={() => {
                         props.setSelected(false);
                     }}
-                    className={`flex justify-center items-center w-1/2 rounded-t-2xl border-[1.5px] border-b-0 cursor-pointer hover:bg-[#f4f4f4] ${
-                        !props.selected && 'bg-[#ededed]'
+                    className={`flex justify-center items-center w-1/2 rounded-t-2xl border-[#9d9d9d] border-[1px] border-b-0 cursor-pointer hover:bg-[#efefef] ${
+                        !props.selected && 'bg-white hover:bg-[#fff] text-black'
                     } `}
                 >
-                    <h2 className="font-semibold">나의 냉장고</h2>
+                    <h2 className="font-semibold">나의 재료</h2>
                 </div>
                 <div
                     onClick={() => {
                         props.setSelected(true);
                     }}
-                    className={`flex justify-center items-center w-1/2 rounded-t-2xl border-[1.5px] border-b-0 cursor-pointer hover:bg-[#f4f4f4] ${
-                        props.selected && 'bg-[#ededed]'
+                    className={`flex justify-center items-center w-1/2 rounded-t-2xl border-[#9d9d9d] border-[1px] border-b-0 cursor-pointer hover:bg-[#efefef] ${
+                        props.selected && 'bg-white hover:bg-[#fff]'
                     }`}
                 >
                     <h2 className="font-semibold text-red-500">

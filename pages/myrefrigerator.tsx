@@ -8,7 +8,7 @@ const MyRefriger: NextPage = () => {
 
     return (
         <>
-            <div className="flex flex-col justify-center items-end w-screen h-screen">
+            <div className="flex flex-col justify-center items-end w-screen h-screen bg-[#e8eaed]">
                 <div className="flex justify-center items-end w-screen h-[95%]">
                     <div className="flex flex-col justify-center items-center w-[95%] lg:w-[890px] h-[90%]">
                         <MyRefSearch />

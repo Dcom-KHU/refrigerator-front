@@ -29,7 +29,7 @@ const MyIngrediantsList = ({ data }: propType) => {
         <>
             <div className="flex relative flex-col self-center w-full h-3/4">
                 <MyRefSelect selected={selected} setSelected={setSelected} />
-                <ul className="flex flex-wrap content-start w-full h-[95%] bg-[#ededed] border-x-[1.5px] rounded-b-xl overflow-y-scroll">
+                <ul className="flex flex-wrap justify-around sm:justify-start content-start w-full h-[95%] bg-white border-[#9d9d9d] border-[1px] border-t-0 rounded-b-xl overflow-y-scroll">
                     {!selected && //나의 냉장고 선택했을 때
                         data.map((item) =>
                             keyword != '' ? ( //search input에 값이 들어있으면

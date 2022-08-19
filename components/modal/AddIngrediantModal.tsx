@@ -66,7 +66,7 @@ const AddIngrediantModal = (props: propType) => {
         <div
             className={`${
                 props.isShow ? 'animate-fadeIn' : 'animate-fadeOut'
-            } flex absolute flex-col justify-around items-center w-2/3 h-1/3 top-16 left-[16%] border-[0.5px] border-[#8a8a8a] rounded-3xl bg-[#ededed] shadow-3xl z-50`}
+            } flex absolute flex-col justify-around items-center w-2/3 h-1/3 top-16 left-[16%] border-[0.5px] border-[#8a8a8a] rounded-3xl bg-[#d3d3d3] shadow-3xl z-50`}
         >
             <form onSubmit={onSubmit}>
                 <div className="flex justify-around items-center -mt-4">
@@ -89,16 +89,16 @@ const AddIngrediantModal = (props: propType) => {
                         className="relative w-1/2 py-3 rounded-2xl outline-none text-center cursor-pointer focus:placeholder-transparent"
                     ></input>
                 </div>
-                <div className="flex justify-center items-end mt-4 -mb-10">
+                <div className="flex justify-center items-end mt-4 -mb-10 text-white">
                     <button
                         onClick={unMount}
-                        className="px-2 py-1 mr-2 border-none bg-[#cecece] rounded-xl hover:text-white"
+                        className="px-2 py-1 mr-2 border-none bg-[#303136] rounded-xl hover:bg-[#3e3f45]"
                     >
                         취소
                     </button>
                     <button
                         onClick={onSubmit}
-                        className="px-2 py-1 mr-2 border-none bg-[#cecece] rounded-xl hover:text-white"
+                        className="px-2 py-1 mr-2 border-none bg-[#303136] rounded-xl hover:bg-[#3e3f45]"
                     >
                         추가
                     </button>

@@ -131,15 +131,16 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
         <>
             <div
                 ref={divRef}
-                className="flex flex-col justify-center content-center items-center w-full h-full border-[1.5px] mt-2 rounded-3xl bg-white"
+                className="flex flex-col justify-center content-center items-center w-full h-full mt-2 rounded-3xl bg-[#e8eaed]"
             >
-                <div className="flex justify-center items-center w-full h-1/3 text-xs sm:text-base">
+                <div className="flex justify-center items-center w-full h-1/3 text-xs sm:text-base font-medium">
                     {thisModifying ? (
                         <input
                             id="name"
                             value={newName}
                             onChange={onChange}
-                            className="w-4/5 h-4/5 rounded-lg lg:rounded-2xl border-2 border-blue-500 text-center outline-none"
+                            autoComplete="off"
+                            className="w-4/5 h-4/5 rounded-lg lg:rounded-2xl text-center outline-none border-2 border-blue-500"
                         ></input>
                     ) : (
                         `${item.name}`
@@ -156,7 +157,8 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
                             type="date"
                             value={newBB}
                             onChange={onChange}
-                            className="w-[90%] h-[90%] rounded-lg lg:rounded-2xl border-2 border-blue-500 text-center outline-none"
+                            autoComplete="off"
+                            className="w-[90%] h-[90%] rounded-lg lg:rounded-2xl text-center outline-none border-2 border-blue-500"
                         ></input>
                     ) : (
                         `${item.bb}`
@@ -166,7 +168,7 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
                     <div className="flex justify-center items-end w-3/4 z-10">
                         <button
                             onClick={ModifyOrCancle}
-                            className="px-[5px] py-[3px] border-[1.5px] rounded-lg sm:rounded-xl text-[10px] md:text-sm hover:bg-[#f6f6f6] mr-1"
+                            className="px-[5px] py-[3px] border-[1.5px] rounded-lg sm:rounded-xl text-[10px] md:text-sm bg-white hover:bg-[#f6f6f6] mr-1"
                         >
                             {thisModifying ? (
                                 '취소'
@@ -176,7 +178,7 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
                         </button>
                         <button
                             onClick={completeHandler}
-                            className="px-[5px] py-[3px] border-[1.5px] rounded-lg sm:rounded-xl text-[10px] md:text-sm hover:bg-[#f6f6f6] ml-1"
+                            className="px-[5px] py-[3px] border-[1.5px] rounded-lg sm:rounded-xl text-[10px] md:text-sm bg-white hover:bg-[#f6f6f6] ml-1"
                         >
                             {thisModifying ? '완료' : <TrashSVG width={20} />}
                         </button>

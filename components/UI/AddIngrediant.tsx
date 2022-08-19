@@ -20,6 +20,9 @@ const AddIngrediant = () => {
             if (showModal) {
                 setIsModifying(false);
                 setIsShow(false);
+                setTimeout(() => {
+                    setShowModal(false);
+                }, 200);
             } else {
                 //무언가 수정중인 경우
                 setInvalidTrying(true);
@@ -51,7 +54,7 @@ const AddIngrediant = () => {
                 ref={divRef}
                 className="flex flex-col absolute justify-center items-center w-full h-14 bottom-0 rounded-b-xl"
             >
-                <div className="sticky self-center rounded-full -mt-5 bg-white hover:bg-[#fbfbfb] cursor-pointer">
+                <div className="sticky self-center rounded-full -mt-5 bg-[#303136] hover:bg-[#3c3e44] cursor-pointer z-50">
                     <Plus width={45} height={45} onClick={onClick} />
                 </div>
             </div>
