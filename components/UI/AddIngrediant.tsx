@@ -1,25 +1,35 @@
 import Plus from '/public/plus.svg';
 import React, { useState, useRef } from 'react';
-import { useRecoilState } from 'recoil';
-import { isModifyingState } from '../../store/myRefrigerStates';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import {
+    isModifyingState,
+    invalidTryingState,
+} from '../../store/myRefrigerStates';
 import AddIngrediantModal from '../modal/AddIngrediantModal';
 
 const AddIngrediant = () => {
     const [showModal, setShowModal] = useState(false);
     const [isShow, setIsShow] = useState(false);
     const [isModifying, setIsModifying] = useRecoilState(isModifyingState);
+    const setInvalidTrying = useSetRecoilState(invalidTryingState);
     const divRef = useRef<HTMLDivElement>(null);
 
     const onClick = () => {
         if (isModifying) {
+            //아이템을 추가 중이었던 경우
             if (showModal) {
                 setIsModifying(false);
                 setIsShow(false);
+            } else {
+                //무언가 수정중인 경우
+                setInvalidTrying(true);
                 setTimeout(() => {
-                    setShowModal(false);
+                    setInvalidTrying(false);
                 }, 200);
-            } else return;
+                return;
+            }
         } else {
+            //아이템 추가를 누른 경우
             if (!showModal) {
                 setShowModal(true);
                 setIsShow(true);
@@ -41,7 +51,7 @@ const AddIngrediant = () => {
                 ref={divRef}
                 className="flex flex-col absolute justify-center items-center w-full h-14 bottom-0 rounded-b-xl"
             >
-                <div className="sticky self-center rounded-full -mt-5 bg-[#ededed] hover:bg-[#e4e4e4] cursor-pointer">
+                <div className="sticky self-center rounded-full -mt-5 bg-white hover:bg-[#fbfbfb] cursor-pointer">
                     <Plus width={45} height={45} onClick={onClick} />
                 </div>
             </div>

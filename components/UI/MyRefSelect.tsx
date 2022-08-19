@@ -1,5 +1,4 @@
 import React from 'react';
-
 interface propType {
     selected: boolean;
     setSelected: React.Dispatch<React.SetStateAction<boolean>>;
@@ -8,13 +7,13 @@ interface propType {
 const MyRefSelect = (props: propType) => {
     return (
         <>
-            <div className="flex w-full h-12">
+            <div className="flex w-full h-12 text-xs md:text-base">
                 <div
                     onClick={() => {
                         props.setSelected(false);
                     }}
                     className={`flex justify-center items-center w-1/2 rounded-t-2xl border-[1.5px] border-b-0 cursor-pointer hover:bg-[#f4f4f4] ${
-                        !props.selected && 'bg-white'
+                        !props.selected && 'bg-[#ededed]'
                     } `}
                 >
                     <h2 className="font-semibold">나의 냉장고</h2>
@@ -24,7 +23,7 @@ const MyRefSelect = (props: propType) => {
                         props.setSelected(true);
                     }}
                     className={`flex justify-center items-center w-1/2 rounded-t-2xl border-[1.5px] border-b-0 cursor-pointer hover:bg-[#f4f4f4] ${
-                        props.selected && 'bg-white'
+                        props.selected && 'bg-[#ededed]'
                     }`}
                 >
                     <h2 className="font-semibold text-red-500">

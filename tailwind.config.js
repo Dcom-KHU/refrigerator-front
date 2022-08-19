@@ -10,8 +10,7 @@ module.exports = {
                 labelUp: 'labelUp 0.2s ease forwards',
                 fadeIn: 'fadeIn 0.2s ease forwards',
                 fadeOut: 'fadeOut 0.2s ease forwards',
-                liAdd: 'liAdd 0.2s linear forwards',
-                liDel: 'fadeOut 0.3s ease-out forwards',
+                vibration: 'vibration 0.3s linear backwards',
             },
             keyframes: {
                 labelUp: {
@@ -26,9 +25,19 @@ module.exports = {
                     '0%': { transform: 'scale(1)' },
                     '100%': { transform: 'scale(0)' },
                 },
-                liAdd: {
-                    '0%': { transform: 'translateY(-100%)' },
-                    '100%': { transform: 'translateY(0)' },
+                vibration: {
+                    '0%': {
+                        transform: 'translateX(0)',
+                    },
+                    '10%, 50%, 90%': {
+                        transform: 'translateX(-3px)',
+                    },
+                    '30%, 70%': {
+                        transform: 'translateX(3px)',
+                    },
+                    '100%': {
+                        transform: 'translateX(0)',
+                    },
                 },
             },
         },

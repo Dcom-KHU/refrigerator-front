@@ -1,9 +1,12 @@
 import React, { useState, SetStateAction } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { myIngrediants } from '../../store/myIngrediants';
-import { isModifyingState, justAddedState } from '../../store/myRefrigerStates';
+import {
+    isModifyingState,
+    justAddedState,
+    invalidTryingState,
+} from '../../store/myRefrigerStates';
 import { v1 } from 'uuid';
-
 interface propType {
     isShow: boolean;
     setIsShow: React.Dispatch<SetStateAction<boolean>>;
@@ -17,6 +20,7 @@ const AddIngrediantModal = (props: propType) => {
     const [name, setName] = useState('');
     const [bb, setBB] = useState(new Date().toJSON().split('T')[0]);
     const setJustAdded = useSetRecoilState(justAddedState);
+    const setInvalidTrying = useSetRecoilState(invalidTryingState);
 
     const Reset = () => {
         setName('');
@@ -34,7 +38,7 @@ const AddIngrediantModal = (props: propType) => {
                 bb,
             };
             //새로운 재료 데이터에 추가
-            setData([newIngrediant, ...data]);
+            setData([...data, newIngrediant]);
             Reset();
             props.setIsShow(false);
             setIsModifying(false);
@@ -49,9 +53,10 @@ const AddIngrediantModal = (props: propType) => {
 
     const unMount = () => {
         //모달 사라질 때 애니메이션용 setTimeout
-        props.setIsShow(false);
         Reset();
+        props.setIsShow(false);
         setIsModifying(false);
+        setInvalidTrying(false);
         setTimeout(() => {
             props.setShowModal(false);
         }, 200);

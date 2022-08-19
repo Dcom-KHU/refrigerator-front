@@ -18,3 +18,9 @@ export const justAddedState = atom<boolean>({
     key: `justAddedState/${v1()}`,
     default: false,
 });
+
+//재료 수정중에 다른 수정/추가 접근있는지 확인하는 state, css 애니메이션용
+export const invalidTryingState = atom<boolean>({
+    key: `invalidTrying/${v1()}`,
+    default: false,
+});
