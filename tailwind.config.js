@@ -5,7 +5,15 @@ module.exports = {
         './components/**/*.{js,ts,jsx,tsx}',
     ],
     theme: {
-        extend: {},
+        extend: {
+            animation: { labelUp: 'labelUp 0.2s ease forwards' },
+            keyframes: {
+                labelUp: {
+                    '0%': { transform: 'translateY(0)' },
+                    '100%': { transform: 'translateY(-150%)' },
+                },
+            },
+        },
         screens: {
             sm: '640px',
             // => @media (min-width: 640px) { ... }
