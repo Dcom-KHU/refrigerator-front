@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 const ChangeNickName = () => {
     const [user, setUser] = useRecoilState(userState);
-    const [newName, setNewName] = useState(user.nickName);
+    const [newName, setNewName] = useState(user.nickname);
     const [isEditting, setIsEditting] = useState(false);
     const [isValid, setIsValid] = useState(true);
 
@@ -15,7 +15,7 @@ const ChangeNickName = () => {
     const onClick = () => {
         if (isValid) {
             setIsEditting((prev) => !prev);
-            setUser({ ...user, nickName: newName });
+            setUser({ ...user, nickname: newName });
         }
     };
 
@@ -60,7 +60,7 @@ const ChangeNickName = () => {
                 ) : (
                     <>
                         <span className="ml-10 text-lg font-semibold">
-                            {user.nickName}
+                            {user.nickname}
                         </span>
                         <button
                             onClick={onClick}

@@ -4,11 +4,11 @@ import React, { useState, useEffect } from 'react';
 
 const ChangePwd = () => {
     const [user, setUser] = useRecoilState(userState);
-    const [newPwd, setNewPwd] = useState(user.pwd);
+    const [newPwd, setNewPwd] = useState(user.password);
     const [isEditting, setIsEditting] = useState(false);
     const [isValid, setIsValid] = useState(true);
 
-    const pwdDot = user.pwd
+    const pwdDot = user.password
         .split('')
         .map(() => '●')
         .join('');
@@ -18,14 +18,14 @@ const ChangePwd = () => {
     };
 
     const cancel = () => {
-        setNewPwd(user.pwd);
+        setNewPwd(user.password);
         setIsEditting(false);
     };
 
     const onClick = () => {
         if (isValid) {
             setIsEditting((prev) => !prev);
-            setUser({ ...user, pwd: newPwd });
+            setUser({ ...user, password: newPwd });
         }
     };
 

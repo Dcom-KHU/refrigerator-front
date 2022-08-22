@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import axios from 'axios';
+import { userState, isAuthedState } from '../../../store/authState';
+import { useRecoilState } from 'recoil';
+import axios from '../../../util/axios';
 import SetUserInfo from './SetUserInfo';
 import SetUserName from './SetUserName';
+import { AxiosError } from 'axios';
+import { setToken } from '../../../util/auth';
 
 const SignUpForm = () => {
     const router = useRouter();
@@ -15,42 +19,53 @@ const SignUpForm = () => {
     const [pwdIsValid, setPwdIsValid] = useState(false);
     const [nickNameIsValid, setNickNameIsValid] = useState(false);
 
+    const [user, setUser] = useRecoilState(userState);
+    const [isAuthed, setIsAuthed] = useRecoilState(isAuthedState);
     const checkIsValid = useCallback(() => {
         return emailIsValid && pwdIsValid && nickNameIsValid;
     }, [emailIsValid, pwdIsValid, nickNameIsValid]);
 
     const signUp = async (
         email: string,
-        pwd: string,
+        password: string,
         name: string,
-        nickName: string
+        nickname: string
     ) => {
         try {
-            const res = await axios.post(
-                'API 작성',
-                { email, pwd, name, nickName },
-                {
-                    withCredentials: true,
-                }
-            );
-            const { accessToken } = res?.data;
-            axios.defaults.headers.common[
-                'Authorization'
-            ] = `Bearer ${accessToken}`;
+            const res = await axios({
+                method: 'POST',
+                url: '/user/join',
+                data: { email, name, nickname, password },
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true,
+            });
+            if (200 <= res.status && res.status < 300) {
+                setUser({
+                    email,
+                    password,
+                    name,
+                    nickname,
+                    point: 0,
+                });
+                router.push('/');
+                console.log(document.cookie);
+                setIsAuthed(true);
+            } else throw new Error();
         } catch (err) {
-            console.log(err);
+            const error = err as AxiosError;
+            if (error.response?.status == 400) {
+                alert('이미 존재하는 이메일입니다.');
+            }
         }
     };
 
     const onSubmit = (event: React.SyntheticEvent) => {
-        //회원가입 로직 짜야함
         event.preventDefault();
         if (!checkIsValid()) {
             alert('올바르지 않은 형식입니다.');
             return;
         }
         signUp(email, pwd, name, nickName);
-        router.replace('/');
     };
 
     useEffect(() => {

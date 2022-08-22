@@ -2,8 +2,10 @@ import type { NextPage } from 'next';
 import { useState } from 'react';
 import classNames from 'classnames';
 import Link from 'next/link';
-
+import { isAuthedState } from '../store/authState';
+import { useRecoilValue } from 'recoil';
 const Header: NextPage = () => {
+    const isAuthed = useRecoilValue(isAuthedState);
     const [menuToggle, setMenuToggle] = useState(false);
 
     return (
@@ -34,19 +36,18 @@ const Header: NextPage = () => {
                     </div>
 
                     <div className="hidden md:flex items-center space-x-1">
-                        <a
-                            href="/myrefrigerator"
-                            className="py-5 px-3 text-gray-700 hover:text-gray-900"
-                        >
-                            나의 냉장고
-                        </a>
+                        <Link href={isAuthed ? '/myrefrigerator' : '/signin'}>
+                            <a className="py-5 px-3 text-gray-700 hover:text-gray-900">
+                                나의 냉장고
+                            </a>
+                        </Link>
                     </div>
 
                     {/* 메뉴2 */}
                     <div className="hidden md:flex items-center space-x-1">
-                        <Link href="/signin">
+                        <Link href={isAuthed ? '/my' : '/signin'}>
                             <a className="py-2 px-3 bg-red-200 hover:bg-red-100 text-red-900 hover:text-red-800 rounded transition duration-300">
-                                로그인
+                                {isAuthed ? '내 정보' : '로그인'}
                             </a>
                         </Link>
                     </div>
@@ -92,18 +93,16 @@ const Header: NextPage = () => {
             </div>
             {/* mobile menu items */}
             <div className={classNames('md:hidden', { hidden: !menuToggle })}>
-                <a
-                    href="/myrefrigerator"
-                    className="block py-2 px-4 text-sm hover:bg-gray-200"
-                >
-                    나의 냉장고
-                </a>
-                <a
-                    href="/login"
-                    className="block py-2 px-4 text-sm hover:bg-gray-200"
-                >
-                    로그인
-                </a>
+                <Link href={isAuthed ? '/myrefrigerator' : '/signin'}>
+                    <a className="block py-2 px-4 text-sm hover:bg-gray-200">
+                        나의 냉장고
+                    </a>
+                </Link>
+                <Link href={isAuthed ? '/my' : '/signin'}>
+                    <a className="block py-2 px-4 text-sm hover:bg-gray-200">
+                        {isAuthed ? '내 정보' : '로그인'}
+                    </a>
+                </Link>
             </div>
         </nav>
     );

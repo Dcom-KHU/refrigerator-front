@@ -9,13 +9,16 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@types/react-cookies": "^0.1.0",
         "@types/uuid": "^8.3.4",
         "autoprefixer": "^10.4.8",
         "axios": "^0.27.2",
         "babel-plugin-styled-components": "^2.0.7",
         "classnames": "^2.3.1",
         "next": "^12.2.4-canary.9",
+        "next-cookies": "^2.0.3",
         "react": "18.2.0",
+        "react-cookies": "^0.1.1",
         "react-dom": "18.2.0",
         "react-is": "^18.2.0",
         "recoil": "^0.7.4",

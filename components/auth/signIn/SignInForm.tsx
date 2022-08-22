@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import axios from 'axios';
+import axios from '../../../util/axios';
 import { useRecoilState } from 'recoil';
-import { isAuth } from '../../../store/authState';
+import { userState, isAuthedState } from '../../../store/authState';
+import { AxiosError } from 'axios';
+import { setToken } from '../../../util/auth';
 
 const SignInForm = () => {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
-    const [isAuthed, setIsAuthed] = useRecoilState(isAuth);
+    const [user, setUser] = useRecoilState(userState);
+    const [isAuthed, setIsAuthed] = useRecoilState(isAuthedState);
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
@@ -17,45 +20,31 @@ const SignInForm = () => {
         else setPwd(value);
     };
 
-    const checkIsValid = () => {
-        return (
-            email.includes('@') &&
-            email.includes('.') &&
-            pwd.length >= 6 &&
-            pwd.length <= 16 &&
-            /[0-9]/.test(pwd) &&
-            /[a-zA-Z]/.test(pwd)
-        );
-    };
-
-    const logIn = async (email: string, pwd: string) => {
+    const logIn = async (email: string, password: string) => {
         try {
-            const res = await axios.post(
-                'API 작성',
-                { email, pwd },
-                {
-                    withCredentials: true,
-                }
-            );
-            const { accessToken } = res?.data;
-            axios.defaults.headers.common[
-                'Authorization'
-            ] = `Bearer ${accessToken}`;
-            setIsAuthed(true);
-            console.log(isAuthed);
+            const res = await axios({
+                method: 'POST',
+                url: '/user/login',
+                data: { email, password },
+            });
+            if (200 <= res.status && res.status < 300) {
+                router.push('/');
+                setIsAuthed(true);
+                console.log(res);
+            }
         } catch (err) {
-            console.log(err);
+            const error = err as AxiosError;
+            if (error.response?.status == 404) {
+                alert('존재하지 않는 이메일입니다.');
+            }
+            if (error.response?.status == 500) {
+                alert('비밀번호가 일치하지 않습니다.');
+            }
         }
     };
     const onSubmit = (event: React.SyntheticEvent) => {
-        //로그인 로직 짜야함
         event.preventDefault();
-        if (!checkIsValid()) {
-            alert('올바르지 않은 형식입니다.');
-            return;
-        }
         logIn(email, pwd);
-        router.replace('/');
     };
 
     return (

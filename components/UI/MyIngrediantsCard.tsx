@@ -161,7 +161,10 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
                             className="w-[90%] h-[90%] rounded-lg lg:rounded-2xl text-center outline-none border-2 border-blue-500"
                         ></input>
                     ) : (
-                        `${item.bb}`
+                        <>
+                            <span>{item.bb}</span>
+                            <span className="text-[11px] ml-1">까지</span>
+                        </>
                     )}
                 </div>
                 <div className="flex justify-center items-end w-full h-1/3">
