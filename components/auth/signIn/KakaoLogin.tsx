@@ -1,7 +1,7 @@
 import KakaoImg from '/public/logo_kakao.svg';
 import Link from 'next/link';
 
-const KakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_RESTAPI_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL}&response_type=code`;
+const KakaoLoginUrl = 'http://20.38.46.151:8080/oauth2/authorization/kakao';
 
 const KakaoLogin = () => {
     return (
