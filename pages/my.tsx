@@ -1,6 +1,25 @@
+import type { GetServerSideProps } from 'next';
+import { stayLogin } from '../util/auth';
+import { useEffect } from 'react';
+import { useSetRecoilState, useRecoilState } from 'recoil';
+import { isAuthedState, userState, User } from '../store/authState';
 import UserProfile from '../components/profile/UserProfile';
 
-const Mypage = () => {
+interface propType {
+    user: User;
+}
+
+const Mypage = (props: propType) => {
+    const setIsAuthed = useSetRecoilState(isAuthedState);
+    const [user, setUser] = useRecoilState(userState);
+
+    useEffect(() => {
+        if (props.user) {
+            setIsAuthed(true);
+            setUser(props.user);
+        } else setIsAuthed(false);
+    }, []);
+
     return (
         <>
             <section className="flex justify-center items-center w-screen h-screen">
@@ -18,3 +37,13 @@ const Mypage = () => {
 };
 
 export default Mypage;
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    const user = await stayLogin(ctx);
+    if (user) {
+        return {
+            props: { user },
+        };
+    }
+    return { props: {} };
+};

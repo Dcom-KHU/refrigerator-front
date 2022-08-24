@@ -1,5 +1,5 @@
-import UserInfo from './UserInfo';
 import ChangeNickName from './ChangeNickName';
+import UserInfo from './UserInfo';
 
 const UserProfile = () => {
     return (

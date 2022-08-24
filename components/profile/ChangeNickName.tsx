@@ -1,12 +1,20 @@
-import { useRecoilState } from 'recoil';
+import { useState, useEffect, useCallback } from 'react';
+import type { GetServerSideProps } from 'next';
+import { stayLogin } from '../../util/auth';
 import { userState } from '../../store/authState';
-import { useState, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 
 const ChangeNickName = () => {
     const [user, setUser] = useRecoilState(userState);
     const [newName, setNewName] = useState(user.nickname);
     const [isEditting, setIsEditting] = useState(false);
     const [isValid, setIsValid] = useState(true);
+
+    const checkIsValid = useCallback(() => {
+        newName && 2 <= newName!.length && newName!.length <= 8
+            ? setIsValid(true)
+            : setIsValid(false);
+    }, [newName]);
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewName(event.target.value);
@@ -15,20 +23,18 @@ const ChangeNickName = () => {
     const onClick = () => {
         if (isValid) {
             setIsEditting((prev) => !prev);
-            setUser({ ...user, nickname: newName });
         }
     };
 
     const cancel = () => {
-        setNewName(user.name);
+        setNewName(user.nickname);
         setIsEditting(false);
     };
 
     useEffect(() => {
-        2 <= newName.length && newName.length <= 8
-            ? setIsValid(true)
-            : setIsValid(false);
-    }, [newName, isValid, setIsValid]);
+        setNewName(user.nickname);
+        checkIsValid();
+    }, [checkIsValid, user]);
 
     return (
         <>
@@ -36,7 +42,7 @@ const ChangeNickName = () => {
                 {isEditting ? (
                     <>
                         <input
-                            value={newName}
+                            value={newName as string}
                             onChange={onChange}
                             className={`ml-10 py-3 px-2 w-1/5 border-none rounded-lg outline ${
                                 isValid
@@ -82,3 +88,8 @@ const ChangeNickName = () => {
 };
 
 export default ChangeNickName;
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    stayLogin(ctx);
+    return { props: {} };
+};

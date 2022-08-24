@@ -1,24 +1,17 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import axios from '../../../util/axios';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userState, isAuthedState } from '../../../store/authState';
+import axios from '../../../util/axios';
 import { AxiosError } from 'axios';
-import { setToken } from '../../../util/auth';
+import { useRouter } from 'next/router';
 
 const SignInForm = () => {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
     const [user, setUser] = useRecoilState(userState);
-    const [isAuthed, setIsAuthed] = useRecoilState(isAuthedState);
-
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
-        if (event.target.id == 'email') setEmail(value);
-        else setPwd(value);
-    };
+    const setIsAuthed = useSetRecoilState(isAuthedState);
 
     const logIn = async (email: string, password: string) => {
         try {
@@ -28,9 +21,10 @@ const SignInForm = () => {
                 data: { email, password },
             });
             if (200 <= res.status && res.status < 300) {
-                router.push('/');
+                const { email, name, nickname, id } = res.data;
+                setUser({ ...user, email, name, nickname, id });
                 setIsAuthed(true);
-                console.log(res);
+                router.replace('/');
             }
         } catch (err) {
             const error = err as AxiosError;
@@ -42,6 +36,13 @@ const SignInForm = () => {
             }
         }
     };
+
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = event.target;
+        if (event.target.id == 'email') setEmail(value);
+        else setPwd(value);
+    };
+
     const onSubmit = (event: React.SyntheticEvent) => {
         event.preventDefault();
         logIn(email, pwd);
