@@ -6,6 +6,7 @@ import {
     isModifyingState,
     invalidTryingState,
 } from '../../store/myRefrigerStates';
+import axios from '../../util/axios';
 import TrashSVG from '/public/trash.svg';
 import Edit from '/public/edit.svg';
 interface ingrediant {

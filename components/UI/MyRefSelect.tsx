@@ -16,7 +16,7 @@ const MyRefSelect = (props: propType) => {
                         !props.selected && 'bg-white hover:bg-[#fff] text-black'
                     } `}
                 >
-                    <h2 className="font-semibold">나의 재료</h2>
+                    <h2 className="font-semibold">내 재료</h2>
                 </div>
                 <div
                     onClick={() => {

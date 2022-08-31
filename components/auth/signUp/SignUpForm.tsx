@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { userState, isAuthedState } from '../../../store/authState';
-import { useRecoilState } from 'recoil';
-import axios from '../../../util/axios';
+import { useSetRecoilState } from 'recoil';
+import { signUp } from '../../../util/auth';
 import SetUserInfo from './SetUserInfo';
 import SetUserName from './SetUserName';
-import { AxiosError } from 'axios';
-import { setToken } from '../../../util/auth';
 
 const SignUpForm = () => {
     const router = useRouter();
@@ -19,53 +17,25 @@ const SignUpForm = () => {
     const [pwdIsValid, setPwdIsValid] = useState(false);
     const [nickNameIsValid, setNickNameIsValid] = useState(false);
 
-    const [user, setUser] = useRecoilState(userState);
-    const [isAuthed, setIsAuthed] = useRecoilState(isAuthedState);
+    const setUser = useSetRecoilState(userState);
+    const setIsAuthed = useSetRecoilState(isAuthedState);
+
     const checkIsValid = useCallback(() => {
         return emailIsValid && pwdIsValid && nickNameIsValid;
     }, [emailIsValid, pwdIsValid, nickNameIsValid]);
 
-    const signUp = async (
-        email: string,
-        password: string,
-        name: string,
-        nickname: string
-    ) => {
-        try {
-            const res = await axios({
-                method: 'POST',
-                url: '/user/join',
-                data: { email, name, nickname, password },
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true,
-            });
-            if (200 <= res.status && res.status < 300) {
-                setUser({
-                    email,
-                    password,
-                    name,
-                    nickname,
-                    point: 0,
-                });
-                router.push('/');
-                console.log(document.cookie);
-                setIsAuthed(true);
-            } else throw new Error();
-        } catch (err) {
-            const error = err as AxiosError;
-            if (error.response?.status == 400) {
-                alert('이미 존재하는 이메일입니다.');
-            }
-        }
-    };
-
-    const onSubmit = (event: React.SyntheticEvent) => {
+    const onSubmit = async (event: React.SyntheticEvent) => {
         event.preventDefault();
         if (!checkIsValid()) {
             alert('올바르지 않은 형식입니다.');
             return;
         }
-        signUp(email, pwd, name, nickName);
+        const user = await signUp(email, pwd, name, nickName);
+        if (user) {
+            setUser(user);
+            setIsAuthed(true);
+            router.replace('/');
+        }
     };
 
     useEffect(() => {
@@ -109,4 +79,5 @@ const SignUpForm = () => {
         </>
     );
 };
+
 export default SignUpForm;

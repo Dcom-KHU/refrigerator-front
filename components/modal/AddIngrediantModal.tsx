@@ -7,6 +7,7 @@ import {
     invalidTryingState,
 } from '../../store/myRefrigerStates';
 import { v1 } from 'uuid';
+import axios from '../../util/axios';
 interface propType {
     isShow: boolean;
     setIsShow: React.Dispatch<SetStateAction<boolean>>;
@@ -16,9 +17,9 @@ interface propType {
 //재료 추가 or 수정시 나오는 모달
 const AddIngrediantModal = (props: propType) => {
     const [data, setData] = useRecoilState(myIngrediants);
-    const setIsModifying = useSetRecoilState(isModifyingState);
     const [name, setName] = useState('');
     const [bb, setBB] = useState(new Date().toJSON().split('T')[0]);
+    const setIsModifying = useSetRecoilState(isModifyingState);
     const setJustAdded = useSetRecoilState(justAddedState);
     const setInvalidTrying = useSetRecoilState(invalidTryingState);
 
@@ -37,6 +38,10 @@ const AddIngrediantModal = (props: propType) => {
                 name,
                 bb,
             };
+            const res = axios({
+                method: 'POST',
+                data: { name, bb },
+            });
             //새로운 재료 데이터에 추가
             setData([...data, newIngrediant]);
             Reset();
@@ -52,7 +57,7 @@ const AddIngrediantModal = (props: propType) => {
     };
 
     const unMount = () => {
-        //모달 사라질 때 애니메이션용 setTimeout
+        //모달 사라질 때 애니메이션용
         Reset();
         props.setIsShow(false);
         setIsModifying(false);
@@ -66,7 +71,7 @@ const AddIngrediantModal = (props: propType) => {
         <div
             className={`${
                 props.isShow ? 'animate-fadeIn' : 'animate-fadeOut'
-            } flex absolute flex-col justify-around items-center w-2/3 h-1/3 top-16 left-[16%] border-[0.5px] border-[#8a8a8a] rounded-3xl bg-[#d3d3d3] shadow-3xl z-50`}
+            } flex absolute flex-col justify-around items-center w-[70%] sm:w-1/2 h-[150px] sm:left-[25%] top-[35%] border-solid border-[1.5px] border-[#8a8a8a] rounded-3xl bg-white shadow-3xl z-50`}
         >
             <form onSubmit={onSubmit}>
                 <div className="flex justify-around items-center -mt-4">
@@ -77,7 +82,7 @@ const AddIngrediantModal = (props: propType) => {
                         }}
                         placeholder="재료명"
                         required
-                        className="relative w-1/3 py-3 rounded-2xl outline-none text-center focus:placeholder-transparent"
+                        className="relative w-1/3 py-3 rounded-2xl border-[#8a8a8a] border-[1px] outline-none text-center focus:placeholder-transparent"
                     ></input>
                     <input
                         value={bb}
@@ -86,7 +91,7 @@ const AddIngrediantModal = (props: propType) => {
                             setBB(e.target.value);
                         }}
                         placeholder="유통기한"
-                        className="relative w-1/2 py-3 rounded-2xl outline-none text-center cursor-pointer focus:placeholder-transparent"
+                        className="relative w-1/2 py-3 rounded-2xl border-[#8a8a8a] border-[1px] outline-none text-center cursor-pointer focus:placeholder-transparent"
                     ></input>
                 </div>
                 <div className="flex justify-center items-end mt-4 -mb-10 text-white">
