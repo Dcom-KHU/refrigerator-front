@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { userState, isAuthedState } from '../../../store/authState';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import axios from '../../../util/axios';
 import SetUserInfo from './SetUserInfo';
 import SetUserName from './SetUserName';
 import { AxiosError } from 'axios';
-import { setToken } from '../../../util/auth';
 
 const SignUpForm = () => {
     const router = useRouter();
@@ -19,8 +18,8 @@ const SignUpForm = () => {
     const [pwdIsValid, setPwdIsValid] = useState(false);
     const [nickNameIsValid, setNickNameIsValid] = useState(false);
 
-    const [user, setUser] = useRecoilState(userState);
-    const [isAuthed, setIsAuthed] = useRecoilState(isAuthedState);
+    const setUser = useSetRecoilState(userState);
+    const setIsAuthed = useSetRecoilState(isAuthedState);
     const checkIsValid = useCallback(() => {
         return emailIsValid && pwdIsValid && nickNameIsValid;
     }, [emailIsValid, pwdIsValid, nickNameIsValid]);
@@ -36,19 +35,29 @@ const SignUpForm = () => {
                 method: 'POST',
                 url: '/user/join',
                 data: { email, name, nickname, password },
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true,
             });
             if (200 <= res.status && res.status < 300) {
+                const {
+                    email,
+                    password,
+                    name,
+                    nickname,
+                    point,
+                    notificationFood,
+                    notificationRefrigerator,
+                    id,
+                } = res.data;
                 setUser({
                     email,
                     password,
                     name,
                     nickname,
-                    point: 0,
+                    point,
+                    notificationFood,
+                    notificationRefrigerator,
+                    id,
                 });
                 router.push('/');
-                console.log(document.cookie);
                 setIsAuthed(true);
             } else throw new Error();
         } catch (err) {
