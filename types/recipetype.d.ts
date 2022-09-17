@@ -7,12 +7,9 @@ export type RecipeType = {
 		"name": string,
 		"description": string,
 		"category": "KOREAN" | "JAPANESE" | "CHINESE" | "WESTERN",
-		"food": [
-			{
-				"ingredient": string,
-				"amount": string,
-			}
-		] 
+		"ingredient": string,
+		"ingredientAmount": string,
+			
 	
   };
 
