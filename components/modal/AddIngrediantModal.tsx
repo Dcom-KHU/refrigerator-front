@@ -1,13 +1,14 @@
 import React, { useState, SetStateAction } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { myIngrediants } from '../../store/myIngrediants';
 import {
     isModifyingState,
     justAddedState,
     invalidTryingState,
 } from '../../store/myRefrigerStates';
-import { v1 } from 'uuid';
-import axios from '../../util/axios';
+import { userState } from '../../store/authState';
+import { addIngredient } from '../../util/myRefriger';
+
 interface propType {
     isShow: boolean;
     setIsShow: React.Dispatch<SetStateAction<boolean>>;
@@ -16,34 +17,24 @@ interface propType {
 
 //재료 추가 or 수정시 나오는 모달
 const AddIngrediantModal = (props: propType) => {
-    const [data, setData] = useRecoilState(myIngrediants);
     const [name, setName] = useState('');
-    const [bb, setBB] = useState(new Date().toJSON().split('T')[0]);
+    const [expiredDate, setExpiredDate] = useState(
+        new Date().toJSON().split('T')[0]
+    );
+    const user = useRecoilValue(userState);
+    const setData = useSetRecoilState(myIngrediants);
     const setIsModifying = useSetRecoilState(isModifyingState);
     const setJustAdded = useSetRecoilState(justAddedState);
     const setInvalidTrying = useSetRecoilState(invalidTryingState);
 
     const Reset = () => {
         setName('');
-        setBB(new Date().toJSON().split('T')[0]);
+        setExpiredDate(new Date().toJSON().split('T')[0]);
     };
 
-    const onSubmit = () => {
-        try {
-            if (name.trim() == '') throw new Error('잘못된 이름입니다.');
-            //추가버튼 눌렀을 때
-            const id = v1();
-            const newIngrediant = {
-                id,
-                name,
-                bb,
-            };
-            const res = axios({
-                method: 'POST',
-                data: { name, bb },
-            });
-            //새로운 재료 데이터에 추가
-            setData([...data, newIngrediant]);
+    const onSubmit = async (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        if (await addIngredient(name, expiredDate, user)) {
             Reset();
             props.setIsShow(false);
             setIsModifying(false);
@@ -51,8 +42,6 @@ const AddIngrediantModal = (props: propType) => {
             setTimeout(() => {
                 props.setShowModal(false);
             }, 200);
-        } catch (err) {
-            alert(err);
         }
     };
 
@@ -85,10 +74,10 @@ const AddIngrediantModal = (props: propType) => {
                         className="relative w-1/3 py-3 rounded-2xl border-[#8a8a8a] border-[1px] outline-none text-center focus:placeholder-transparent"
                     ></input>
                     <input
-                        value={bb}
+                        value={expiredDate}
                         type="date"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setBB(e.target.value);
+                            setExpiredDate(e.target.value);
                         }}
                         placeholder="유통기한"
                         className="relative w-1/2 py-3 rounded-2xl border-[#8a8a8a] border-[1px] outline-none text-center cursor-pointer focus:placeholder-transparent"
