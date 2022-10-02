@@ -17,7 +17,7 @@ export const fetchIngredients = async (user: any) => {
 export const addIngredient = async (
     name: string,
     expiredDate: string,
-    user: any
+    userId: number
 ) => {
     try {
         if (name.trim() == '') throw new Error('잘못된 이름입니다.');
@@ -30,7 +30,7 @@ export const addIngredient = async (
             method: 'POST',
             url: '/refrigerator/add',
             data: newIngrediant,
-            headers: { userId: user.id !== null && user.id },
+            headers: { userId },
         });
         if (200 <= res.status && res.status < 300) return true;
     } catch (err) {
@@ -39,11 +39,12 @@ export const addIngredient = async (
     }
 };
 
-export const deleteIngredient = async (id: number) => {
+export const deleteIngredient = async (id: number, userId: number) => {
     try {
         const res = await axios({
             method: 'DELETE',
             url: `/refrigerator/delete/${id}`,
+            headers: { userId },
         });
         if (200 <= res.status && res.status < 300) {
             return true;
@@ -54,12 +55,18 @@ export const deleteIngredient = async (id: number) => {
     }
 };
 
-export const modifyIngredient = async (id: number, expiredDate: string) => {
+export const modifyIngredient = async (
+    id: number,
+    name: string,
+    expiredDate: string,
+    userId: number
+) => {
     try {
         const res = await axios({
             method: 'POST',
-            url: '/refrigerator/modify',
-            data: { id, expiredDate },
+            url: `/refrigerator/modify/${id}`,
+            data: { id, name, expiredDate },
+            headers: { userId },
         });
         if (200 <= res.status && res.status < 300) {
             return true;

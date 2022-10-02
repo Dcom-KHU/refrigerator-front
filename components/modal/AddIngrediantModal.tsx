@@ -1,13 +1,13 @@
 import React, { useState, SetStateAction } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { myIngrediants } from '../../store/myIngrediants';
 import {
     isModifyingState,
     justAddedState,
     invalidTryingState,
 } from '../../store/myRefrigerStates';
 import { userState } from '../../store/authState';
-import { addIngredient } from '../../util/myRefriger';
+import { addIngredient, fetchIngredients } from '../../util/myRefriger';
+import { myIngrediants } from '../../store/myIngrediants';
 
 interface propType {
     isShow: boolean;
@@ -34,7 +34,8 @@ const AddIngrediantModal = (props: propType) => {
 
     const onSubmit = async (event: React.SyntheticEvent) => {
         event.preventDefault();
-        if (await addIngredient(name, expiredDate, user)) {
+        if (await addIngredient(name, expiredDate, user!.id)) {
+            setData(await fetchIngredients(user));
             Reset();
             props.setIsShow(false);
             setIsModifying(false);

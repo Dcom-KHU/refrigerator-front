@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { GetServerSideProps } from 'next';
 import MyRefSearch from '../components/myRef/MyRefSearch';
 import MyIngrediantsList from '../components/myRef/MyIngrediantsList';
@@ -12,23 +12,25 @@ import { UserType } from '../store/authState';
 interface propType {
     user: UserType;
 }
+
 const MyRefriger = (props: propType) => {
     const [data, setData] = useRecoilState(myIngrediants);
     const [isAuthed, setIsAuthed] = useRecoilState(isAuthedState);
     const [user, setUser] = useRecoilState(userState);
 
-    const fecth = async () => {
+    const fetchAllIngredients = async () => {
         const data = await fetchIngredients(user);
         if (data) setData(data);
     };
 
     useEffect(() => {
-        if (props.user) {
-            setUser(props.user);
+        const user = props.user;
+        if (user) {
+            setUser(user);
             setIsAuthed(true);
-            fecth();
+            fetchAllIngredients();
         } else setIsAuthed(false);
-    }, [data]);
+    }, [user]);
 
     return (
         <>

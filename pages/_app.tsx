@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import 'tailwindcss/tailwind.css';
 import type { AppProps } from 'next/app';
 import { RecoilRoot } from 'recoil';
+import Header from '../components/header';
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
@@ -11,6 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 name="viewport"
                 content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             />
+            <Header />
             <Component {...pageProps} />
         </RecoilRoot>
     );

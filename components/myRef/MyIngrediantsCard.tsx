@@ -1,8 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { myIngrediants } from '../../store/myIngrediants';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { ingredient } from '../../types/recipetype';
-import axios from '../../util/axios';
 
 import {
     justAddedState,
@@ -12,6 +10,7 @@ import {
 import TrashSVG from '/public/trash.svg';
 import Edit from '/public/edit.svg';
 import { deleteIngredient, modifyIngredient } from '../../util/myRefriger';
+import { userState } from '../../store/authState';
 
 interface propType {
     item: ingredient;
@@ -19,7 +18,8 @@ interface propType {
 }
 
 const MyIngrediantsCard = ({ item, isDanger }: propType) => {
-    const [data, setData] = useRecoilState(myIngrediants);
+    const user = useRecoilValue(userState);
+
     const [newName, setNewName] = useState(item.name);
     const [newExpiredDate, setNewExpiredDate] = useState(item.expiredDate);
     //아이템이 방금추가됐는지 확인하는 state, 애니메이션용
@@ -71,11 +71,17 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
             //0.2초간 삭제 애니메이션 후 삭제
             (divRef.current as HTMLDivElement).className += ' animate-fadeOut';
             setTimeout(async () => {
-                await deleteIngredient(item.id);
+                await deleteIngredient(item.id, user!.id);
+                console.log(item.id);
             }, 200);
         } else {
             //수정 버튼 눌렀을 때
-            await modifyIngredient(item.id, item.expiredDate).then((res) => {
+            await modifyIngredient(
+                item.id,
+                item.name,
+                item.expiredDate,
+                user!.id
+            ).then((res) => {
                 setIsModifying(false);
                 setThisModifying(false);
             });
