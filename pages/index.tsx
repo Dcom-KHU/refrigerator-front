@@ -5,6 +5,7 @@ import TodaysRecipe from '../components/recipe/TodaysRecipe';
 import Head from 'next/head';
 import AddRecipeIcon from '../public/addRecipeIcon.svg'
 import Link from 'next/link';
+import axios from 'axios';
 
 
 
@@ -23,7 +24,6 @@ const Home: NextPage = ({data}:any) => {
             </div>
             
             <div className = "fixed bottom-20 right-10" >
-            <h1>레시피등록</h1>
             <Link href= '/newrecipeform'>
             <AddRecipeIcon  width={70} height={70}/>
             </Link>
@@ -36,14 +36,21 @@ const Home: NextPage = ({data}:any) => {
 export default Home;
 
 
-// 해당 페이지 렌더링 시 항상 실행
-export async function getServerSideProps(context:any) {
-    // api를 통해 받은 data 정보
-    const res = await fetch("http://20.38.46.151:8080/food/info/foodName");
-    const posts = await res.json();
-    return {
-      props: {posts},
 
-      //	page component의 Props로 전달되는 객체
+
+    axios.get('http://20.38.46.151:8080/food/1')
+    .then(function(response){
+    const recipe = response.data
+    console.log('recipe')
+    console.log(recipe.name)
+})
+
+async function getRecipes() {
+    try {
+      const response = await axios.get('http://20.38.46.151:8080/food/1');
+      console.log(response)
+    }
+    catch (error) {
+      console.log(error);
     }
   }

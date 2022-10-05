@@ -1,36 +1,33 @@
 
 import axios from 'axios';
+import { it } from 'node:test';
+import { useEffect } from 'react';
 import { RecipeType } from '../../types/recipetype';
 import ReciepeItem from './RecipeItem';
 
-/*레시피 리스트 처리 */
-const APIkey = 'apikeyexample';
+interface propType{
+    recipeList:any
+}
+// 레시피 리스트 보여주는 컴포넌트
+const RecipeList = (props:propType) => {
 
-/*
-const [recipes, setRecipes] = useState([ ])
-useEffect ( () => {
-   ( async () => {
-    const {results} = await (
-    await fetch(`url${APIkey}`)).json();
-    setRecipes(results)})();
- }  ,[]);
-*/
-
-
-//recipes에 서버에서 받아온 정보를 담고
-
-const RecipeList: React.FC = () => {
-    // const foodName:string = recipes.name 
-
+  
     return (
         <>
             <div>
-         
-                <ReciepeItem  />
+                {props.recipeList.length > 0 &&
+                props.recipeList.map((it:any)=>(
+                    <ReciepeItem id={it.id} name={it.name} description={it.description} writer={it.writer} category={it.category}
+                    ingredientAmount={it.ingredientAmount} ingredient={it.ingredient} />
+                ))} 
                     
             </div>
         </>
     );
+};
+
+RecipeList.defaultProps= {
+    recipeList : [],
 };
 //map REcipeItem
 //       {recipes.map((recipe) => 
@@ -38,14 +35,6 @@ const RecipeList: React.FC = () => {
 
 export default RecipeList;
 
-
-export async function getServerSideProps(context:any) {
-    const res  = await axios.get('http://20.38.46.151:8080/food/1')
-    const recipes = res.data
-    console.log(recipes)
-
-    return {props: {recipes}}
-}
 
 
 // id:number = {recipe.id}

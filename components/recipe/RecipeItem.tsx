@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { RecipeType } from '../../types/recipetype';
 
 //props에 담긴 이미지 가져오기
 // const myLoader = ({ src, width, quality }) => {
@@ -6,8 +7,21 @@ import Image from "next/image";
 //   }
 //<Image Loader ={myLoader}
 
+interface propType{
+    id:number,
+    name:string,
+    description:string,
+    ingredient:any,
+    writer:string,
+    category:string,
+    ingredientAmount:string,
 
-const ReciepeItem : React.FC = (props) => {
+}
+
+const ReciepeItem = (props:propType) => {
+    console.log("item")
+    console.log(props)
+    console.log(props.description)
     return ( 
       <>
             <div className="p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5">
@@ -21,10 +35,10 @@ const ReciepeItem : React.FC = (props) => {
                             />
                             <div className="px-6 py-4">
                                 <div className="font-bold text-xl mb-2">
-                                    name
+                                   {props.name}
                                 </div>
                                 <p className="text-gray-700 text-base">
-                                    description
+                                  {props.description}
                                 </p>
                             </div>
                             <div className="px-6 pt-4 pb-2">

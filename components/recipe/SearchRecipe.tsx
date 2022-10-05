@@ -3,13 +3,62 @@ import type { NextPage } from 'next';
 import StyledButton from '../common/Button';
 import RecipeList from './RecipeList';
 import axios from 'axios';
+import { prependOnceListener } from 'process';
 
 const SearchRecipe: NextPage = () => {
 
-    const [loadRecipes, setLoadedRecipes ] = useState([]);
-    //버튼 클릭시 음식 카테고리별 리스트 
+    const recipeId = 1;
 
-    //serversideRendering으로 쿼리로 데이터를 검색한다
+    //api로 레시피 all받아와서 props로 전달
+    const [loadRecipes, setLoadRecipes ] = useState({});
+    useEffect( ()=> {
+        axios.get('http://localhost:8080/food/1')
+        .then(function(response){
+        const recipe = response.data
+        setLoadRecipes(recipe)})}    
+    ,[])
+    
+    // axios.get('http://20.38.46.151:8080/food/1')
+    // .then(function(response){
+    // const recipe = response.data
+    // console.log('recipe');
+    // console.log(recipe);
+    // setLoadRecipes(recipe)
+    //     console.log(loadRecipes)})
+   
+
+
+  //클릭한 버튼의 title을 state에 저장
+    const [content, setContent] = useState();
+
+    const handleClickButton = (e:any) =>{
+        const {title} = e.target;
+        setContent(title)
+
+    }
+
+    // const filterRecipeLists= () =>{
+    //     loadRecipes.filter()
+    // }    
+     
+
+//카테고리별로 api겟해오기
+    async function handleClickedCategory(category:string) {
+        try {
+          const response = await axios.get(category);
+          console.log(response);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      
+    // const onClickCategory = (props) => {
+    //     //클릭한 버튼이 
+    //     if 누른버튼 내용 === 리스트의 카테고리 
+    //     return (해당 리스트)
+
+    // }
+    // //serversideRendering으로 쿼리로 데이터를 검색한다
 
     return (
         <>
@@ -63,7 +112,8 @@ const SearchRecipe: NextPage = () => {
             </div>
 
             <div>
-                <RecipeList />
+                <RecipeList recipeList={loadRecipes} />
+                
             </div>
         </>
     );
@@ -82,6 +132,7 @@ async function getData() {
         config
       );
       console.log("success!", response);
+
     } catch (error) {
       console.log(error);
     }
