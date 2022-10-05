@@ -15,7 +15,7 @@ const Home = (props: propType) => {
     const setIsAuthed = useSetRecoilState(isAuthedState);
     const [user, setUser] = useRecoilState(userState);
 
-    useEffect(() => {
+    const checkUser = useCallback(() => {
         if (props.user) {
             setIsAuthed(true);
             setUser(props.user);

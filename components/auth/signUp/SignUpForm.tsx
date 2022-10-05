@@ -2,9 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { userState, isAuthedState } from '../../../store/authState';
 import { useSetRecoilState } from 'recoil';
-import { signUp } from '../../../util/auth';
+import axios from '../../../util/axios';
 import SetUserInfo from './SetUserInfo';
 import SetUserName from './SetUserName';
+import { AxiosError } from 'axios';
+import { signUp } from '../../../util/auth';
 
 const SignUpForm = () => {
     const router = useRouter();
@@ -23,6 +25,7 @@ const SignUpForm = () => {
     const checkIsValid = useCallback(() => {
         return emailIsValid && pwdIsValid && nickNameIsValid;
     }, [emailIsValid, pwdIsValid, nickNameIsValid]);
+
 
     const onSubmit = async (event: React.SyntheticEvent) => {
         event.preventDefault();
