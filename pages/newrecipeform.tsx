@@ -11,6 +11,15 @@ const NewRecipeForm:NextPage = (props) => {
     const [images, setImages] = useState<File[]>([]);
     const [addCookingProcess, setAddCookingProcess] = useState(false);
     const [toggle, setToggle] = useState(false);
+    const categoryLists =["KOREAN", "CHINESE","WESTERN","JAPANESE"];
+    const [selectedCategory, setSelectedCategory] = useState("");
+
+    const handleSelectedCategory =(e:any) =>{
+        setSelectedCategory(e.target.value);
+        console.log("selecteed")
+        console.log(selectedCategory)
+    }
+
     
 
     const addCookingHandler = () =>{
@@ -19,6 +28,10 @@ const NewRecipeForm:NextPage = (props) => {
 
     const clickedToggle = () => {
         setToggle((prev) => !prev);
+    }
+
+    const goBack =() => {
+
     }
 
 
@@ -32,7 +45,7 @@ const NewRecipeForm:NextPage = (props) => {
     const descriptionInputRef = useRef<HTMLInputElement>(null);
     const mainImageRef = useRef<HTMLInputElement>(null);
 
-    const url = 'http://20.38.46.151:8080/food/register'
+    const url = 'http://localhost:8080/food/register'
     const userId = 1
 
     // const onChangeImg = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,21 +77,25 @@ const NewRecipeForm:NextPage = (props) => {
         event.preventDefault();
 
         const enteredName = nameInputRef.current!.value;
-        const enteredCategory = categoryInputRef.current!.value;
+        //const enteredCategory = categoryInputRef.current!.value;
         const enteredDescription = descriptionInputRef.current!.value;
-        //const enteredImages = imagesInputRef.current!.value;
+        const enteredImages = imagesInputRef.current!.value;
         const enteredImageDescriptions = JSON.stringify(imageDescriptionsInputRef.current!.value);
-        const enteredIngredient =  JSON.stringify(ingredientInputRef.current!.value);
+        const enteredIngredient = JSON.stringify(ingredientInputRef.current!.value);
         const enteredIngredientAmount = JSON.stringify(ingredientAmountInputRef.current!.value);
 
 
         const formRecipeData = new FormData()
 
         formRecipeData.append("name", enteredName);
-        formRecipeData.append('category', enteredCategory)
+        formRecipeData.append('category', selectedCategory)
         formRecipeData.append('description', enteredDescription)
-        for (let i = 0; i < images.length; i++) {
-            formRecipeData.append('images', images[i]);
+        // for (let i = 0; i < images.length; i++) {
+        //     formRecipeData.append('images', images[i]);
+        // }
+        if (imagesInputRef.current!.files !== null ) {
+            const enteredRecipeImage = imagesInputRef.current!.files?.item(0) as File
+            formRecipeData.append('image', enteredRecipeImage);
         }
         formRecipeData.append('imageDescriptions', enteredImageDescriptions )
         formRecipeData.append('ingredient', enteredIngredient )
@@ -122,15 +139,13 @@ const NewRecipeForm:NextPage = (props) => {
    
     return (
 
-  
-    
     <div>
           <Header/>
           
           <div className="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
           <div className='my-10'>
             <div id='section2' className="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
-            <button className=" shadow bg-gray-200 hover:bg-gray-500 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded" type='button'>
+            <button className=" shadow bg-gray-200 hover:bg-gray-500 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded" type='button' >
                                 이전
             </button>
             
@@ -160,7 +175,7 @@ const NewRecipeForm:NextPage = (props) => {
                         </label>
                     </div>
                  <div className="md:w-2/3">
-                    <input   ref={descriptionInputRef} id="message" name='description' className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="음식 설명" required />
+                    <input ref={descriptionInputRef} id="message" name='description' className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="음식 설명" required />
                  </div>
                 </div>
 
@@ -173,6 +188,7 @@ const NewRecipeForm:NextPage = (props) => {
                         </div>
                         <div className="md:w-2/3">
                             <select className="form-select block w-full focus:bg-white" id="my-select" ref={categoryInputRef}
+                            onChange = {handleSelectedCategory}
                             type="text"
                             name="category">
                                 <option value="KOREAN">한식</option>
@@ -244,7 +260,7 @@ const NewRecipeForm:NextPage = (props) => {
                             {addCookingProcess && 
                             <div>
                                 <input className="mb-3 md:mb-0 pr-4 block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
-                                 type="file" id="recipeImage_input" name="images" accept="image/*"ref={mainImageRef} onChange={onChangeImg}/> 
+                                 type="file" id="recipeImage_input" name="images" accept="image/*"ref={imagesInputRef} onChange={onChangeImg}/> 
                         
                                 <div className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="user_avatar_help">각 단계에 해당하는 이미지를 첨부해 주세요</div>
                         

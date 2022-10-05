@@ -10,6 +10,12 @@ import axios from 'axios';
 
 
 const Home: NextPage = ({data}:any) => {
+    axios.get('http://localhost:8080/food/search')
+    .then(function(response){
+    console.log('elastic')
+    console.log(response)
+})
+
     return (
         <div>
             <Head>
@@ -38,12 +44,7 @@ export default Home;
 
 
 
-    axios.get('http://20.38.46.151:8080/food/1')
-    .then(function(response){
-    const recipe = response.data
-    console.log('recipe')
-    console.log(recipe.name)
-})
+
 
 async function getRecipes() {
     try {
