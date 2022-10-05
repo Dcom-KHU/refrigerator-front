@@ -15,7 +15,7 @@ const Home = (props: propType) => {
     const setIsAuthed = useSetRecoilState(isAuthedState);
     const [user, setUser] = useRecoilState(userState);
 
-    const checkUser = useCallback(() => {
+    const checkUser = () => {
         if (props.user) {
             setIsAuthed(true);
             setUser(props.user);
@@ -23,6 +23,10 @@ const Home = (props: propType) => {
             user && logOut(user.id);
             setIsAuthed(false);
         }
+    };
+
+    useEffect(() => {
+        checkUser();
     }, []);
 
     return (
