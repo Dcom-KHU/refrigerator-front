@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import { useState } from 'react';
 import classNames from 'classnames';
 import Link from 'next/link';
-import { isAuthedState } from '../store/authState';
+import { isAuthedState } from '../../store/authState';
 import { useRecoilValue } from 'recoil';
 const Header: NextPage = () => {
     const isAuthed = useRecoilValue(isAuthedState);

@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import 'tailwindcss/tailwind.css';
 import type { AppProps } from 'next/app';
 import { RecoilRoot } from 'recoil';
-import Header from '../components/header';
+import Header from '../components/common/Header';
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (

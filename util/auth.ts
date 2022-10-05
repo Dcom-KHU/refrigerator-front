@@ -13,6 +13,7 @@ export const signIn = async (email: string, password: string) => {
             data: { email, password },
         });
         if (200 <= res.status && res.status < 300) {
+            console.log(res);
             return res.data;
         }
     } catch (err) {
