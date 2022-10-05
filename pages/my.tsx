@@ -3,11 +3,11 @@ import { stayLogin, logOut } from '../util/auth';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { isAuthedState, userState, User } from '../store/authState';
+import { isAuthedState, userState, UserType } from '../store/authState';
 import UserProfile from '../components/profile/UserProfile';
 
 interface propType {
-    user: User;
+    user: UserType;
 }
 
 const Mypage = (props: propType) => {
@@ -24,12 +24,12 @@ const Mypage = (props: propType) => {
     }, []);
 
     const onClick = async () => {
-        const res = user.id && (await logOut(user.id));
-        if (res) {
-            resetUser();
-            setIsAuthed(false);
-            router.replace('/');
-        }
+        user &&
+            (await logOut(user.id).then((res) => {
+                router.replace('/');
+                resetUser();
+                setIsAuthed(false);
+            }));
     };
 
     return (

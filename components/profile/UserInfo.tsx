@@ -1,8 +1,8 @@
 import { userState } from '../../store/authState';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import ChangePwd from './ChangePwd';
 const UserInfo = () => {
-    const userEmail = useRecoilValue(userState).email;
+    const [user, setUser] = useRecoilState(userState);
 
     return (
         <>
@@ -15,7 +15,7 @@ const UserInfo = () => {
                         이메일 주소
                     </span>
                     <div className="flex items-center w-52 lg:w-80 h-12 -mt-10 text-[#2222227f] border-b-[1.3px] border-solid border-b-[#d3d3d3]">
-                        {userEmail}
+                        {user && user.email}
                     </div>
                     <span className="text-base text-[#2222227f]">비밀번호</span>
                     <ChangePwd />

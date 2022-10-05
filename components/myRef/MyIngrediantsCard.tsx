@@ -1,29 +1,27 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { myIngrediants } from '../../store/myIngrediants';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { ingredient } from '../../types/recipetype';
+
 import {
     justAddedState,
     isModifyingState,
     invalidTryingState,
 } from '../../store/myRefrigerStates';
-import axios from '../../util/axios';
 import TrashSVG from '/public/trash.svg';
 import Edit from '/public/edit.svg';
-interface ingrediant {
-    id: string;
-    name: string;
-    bb: string;
-}
+import { deleteIngredient, modifyIngredient } from '../../util/myRefriger';
+import { userState } from '../../store/authState';
 
 interface propType {
-    item: ingrediant;
+    item: ingredient;
     isDanger: boolean;
 }
 
 const MyIngrediantsCard = ({ item, isDanger }: propType) => {
-    const [data, setData] = useRecoilState(myIngrediants);
+    const user = useRecoilValue(userState);
+
     const [newName, setNewName] = useState(item.name);
-    const [newBB, setNewBB] = useState(item.bb);
+    const [newExpiredDate, setNewExpiredDate] = useState(item.expiredDate);
     //아이템이 방금추가됐는지 확인하는 state, 애니메이션용
     const [justAdded, setJustAdded] = useRecoilState(justAddedState);
     //수정/추가 중일 때 또 다른 수정/추가 요청을 감지하는 state, 애니메이션용
@@ -36,13 +34,6 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
     //수정중인 재료가 있는지 확인하는 전역 recoil state
     const [isModifying, setIsModifying] = useRecoilState(isModifyingState);
 
-    //특정 인덱스의 아이템 교체
-    const replaceItemAtIndex = <T,>(
-        arr: T[],
-        index: number,
-        newValue: T
-    ): T[] => [...arr.slice(0, index), newValue, ...arr.slice(index + 1)];
-
     const ModifyOrCancle = () => {
         //다른 재료가 수정중이면 invalidTrying true로 만듦
         if (isModifying && !thisModifying) {
@@ -54,7 +45,7 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
             setThisModifying(false);
             setIsModifying(false);
             setNewName(item.name);
-            setNewBB(item.bb);
+            setNewExpiredDate(item.expiredDate);
         }
         //다른 재료가 수정중이지 않으면 현재 재료를 수정 상태로 바꿔줌
         else if (!isModifying) {
@@ -66,10 +57,10 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
         if (e.target.id == 'name') setNewName(value);
-        else setNewBB(value);
+        else setNewExpiredDate(value);
     };
 
-    const completeHandler = () => {
+    const completeHandler = async () => {
         //삭제 버튼 눌렀을 때
         if (!thisModifying) {
             //무언가 수정 중이면 invalidTrying을 true로 set하고 return
@@ -79,21 +70,21 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
             }
             //0.2초간 삭제 애니메이션 후 삭제
             (divRef.current as HTMLDivElement).className += ' animate-fadeOut';
-            setTimeout(() => {
-                const filtered = data.filter((now) => now.id !== item.id);
-                setData(filtered);
+            setTimeout(async () => {
+                await deleteIngredient(item.id, user!.id);
+                console.log(item.id);
             }, 200);
         } else {
             //수정 버튼 눌렀을 때
-            const index = data.findIndex((oldItem) => oldItem.id === item.id);
-            const newData = replaceItemAtIndex(data, index, {
-                ...item,
-                name: newName,
-                bb: newBB,
+            await modifyIngredient(
+                item.id,
+                item.name,
+                item.expiredDate,
+                user!.id
+            ).then((res) => {
+                setIsModifying(false);
+                setThisModifying(false);
             });
-            setData(newData);
-            setIsModifying(false);
-            setThisModifying(false);
         }
     };
 
@@ -126,6 +117,7 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
     useEffect(() => {
         checkJustAdded();
         checkInvalidTrying();
+        console.log(item);
     }, [checkInvalidTrying]);
 
     return (
@@ -154,16 +146,16 @@ const MyIngrediantsCard = ({ item, isDanger }: propType) => {
                 >
                     {thisModifying ? (
                         <input
-                            id="bb"
+                            id="expiredDate"
                             type="date"
-                            value={newBB}
+                            value={newExpiredDate}
                             onChange={onChange}
                             autoComplete="off"
                             className="w-[90%] h-[90%] rounded-lg lg:rounded-2xl text-center outline-none border-2 border-blue-500"
                         ></input>
                     ) : (
                         <>
-                            <span>{item.bb}</span>
+                            <span>{item.expiredDate.split('T')[0]}</span>
                             <span className="text-[11px] ml-1">까지</span>
                         </>
                     )}

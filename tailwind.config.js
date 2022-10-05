@@ -11,6 +11,7 @@ module.exports = {
                 fadeIn: 'fadeIn 0.2s ease forwards',
                 fadeOut: 'fadeOut 0.2s ease forwards',
                 vibration: 'vibration 0.3s linear backwards',
+                sideMove: 'sideMove 0.8s infinite forwards',
             },
             keyframes: {
                 labelUp: {
@@ -38,6 +39,10 @@ module.exports = {
                     '100%': {
                         transform: 'translateX(0)',
                     },
+                },
+                sideMove: {
+                    '0%, 100%': { transform: 'translateX(0)' },
+                    '50%': { transform: 'translateX(3px)' },
                 },
             },
         },
