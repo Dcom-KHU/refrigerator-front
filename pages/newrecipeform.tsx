@@ -1,12 +1,25 @@
 import axios from 'axios';
 import { NextPage } from 'next';
 import { useRef , useState} from 'react';
+import Header from '../components/common/Header';
+import AddListsIcon from '../public/addLists.svg'
 
 
 const NewRecipeForm:NextPage = (props) => {
 
     const [mainImage, setMainImage] = useState<File>();
     const [images, setImages] = useState<File[]>([]);
+    const [addCookingProcess, setAddCookingProcess] = useState(false);
+    const [toggle, setToggle] = useState(false);
+    
+
+    const addCookingHandler = () =>{
+        setAddCookingProcess( true);
+    }
+
+    const clickedToggle = () => {
+        setToggle((prev) => !prev);
+    }
 
 
     //입력받은 값들을 변수에 담기
@@ -59,8 +72,6 @@ const NewRecipeForm:NextPage = (props) => {
         const enteredIngredientAmount = JSON.stringify(ingredientAmountInputRef.current!.value);
 
 
-
-
         const formRecipeData = new FormData()
 
         formRecipeData.append("name", enteredName);
@@ -78,33 +89,7 @@ const NewRecipeForm:NextPage = (props) => {
             formRecipeData.append('mainImage', enteredMainImage);
         }
 
-        
-
     
-
-        //입력 받은 값을 각 변수에 할당
-        // const enteredName = nameInputRef.current!.value;
-        // const enteredCategory = categoryInputRef.current!.value;
-        // const enteredImages = imagesInputRef.current!.value;
-        // //photoFile = document.getElementById("photo");
-        // //frm.append("photo", photoFile.files[0]);
-        // const enteredImageDescriptions = JSON.stringify(imageDescriptionsInputRef.current!.value);
-        // const enteredIngredient = JSON.stringify(ingredientInputRef.current!.value);
-        // const enteredIngredientAmount = JSON.stringify(ingredientAmountInputRef.current!.value);
-        // const enteredDescription = descriptionInputRef.current!.value;
-
-        //등록하고자 하는 정보(입력받은 값들) : recipeData
-        // const recipeData = {
-        //     name: enteredName,
-        //     category: enteredCategory,
-        //     image: enteredImages,
-        //     imageDescription: enteredImageDescriptions,
-        //     ingredient: enteredIngredient,
-        //     ingredientAmount: enteredIngredientAmount,
-        //     description: enteredDescription,
-        // };
-        // console.log(recipeData);
-
         //file image upload 를 state로 빼고 state를 활용해서 데이터 올리도록
        
         const config = {
@@ -114,9 +99,6 @@ const NewRecipeForm:NextPage = (props) => {
             },
           };
         
-        
-        
-          
           axios.post(url, formRecipeData, 
             config
           )
@@ -125,21 +107,6 @@ const NewRecipeForm:NextPage = (props) => {
             console.log(response);
           })
 
-        
-        // try {
-        //     const res = await axios.post(
-        //         url , 
-        //         formRecipeData,
-        //         {
-        //             headers: {
-        //                 'userId': userId,
-        //                 'Content-Type': 'multipart/form-data'}
-
-        //         }    
-        //     );
-        // } catch (e) {
-        //     console.log(e);
-        // }
     }
 
 
@@ -151,78 +118,168 @@ const NewRecipeForm:NextPage = (props) => {
 
         //클릭 횟수만큼 해당 컴포넌트 개수를 늘리도록
         //사진과 설명을 하나의 컴포넌트로 ( 배열 )
+        //container mx-auto my-10 box-border h-90 w-90 items-center 
    
     return (
-        <>
+
+  
+    
+    <div>
+          <Header/>
+          
+          <div className="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+          <div className='my-10'>
+            <div id='section2' className="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+            <button className=" shadow bg-gray-200 hover:bg-gray-500 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded" type='button'>
+                                이전
+            </button>
+            
             <form name="RecipeRegisterForm" onSubmit={submitHandler}>
-            <h1>새로운 레시피 등록</h1>   
-                <div className='items-center mx-3' >
-                         <div className="relative z-0 mb-6 w-full group">
-                             <input ref={nameInputRef} type="text" name="name" id="name_" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                            <label  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">음식이름</label>
+            
+            {/* 제목 */}
+            <h2 className="my-3 font-sans font-bold break-normal text-gray-700 px-2 pb-8 text-xl">새로운 레시피 등록</h2>
+            <div className='items-center mx-3' >
+                <div className="md:flex mb-6">
+                    <div className="md:w-1/3">
+                        <label className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" htmlFor="my-textfield">
+                                음식 이름
+                        </label>
+                    </div>
+                    <div className="md:w-2/3">
+                        <div className="relative z-0 mb-6 w-full group">
+                         <input ref={nameInputRef} type="text" name="name" id="name_" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="음식 이름" required />
                          </div>
+                    </div>
+                </div>
 
-                        <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" htmlFor='mainImage_input' >Upload Main Image</label>
-                    <input className="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
-                     type="file" id="mainImage_input"
-                            name="images"
-                            accept="image/*"ref={mainImageRef}/>
-                    <div className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="user_avatar_help">A profile picture is useful to confirm your are logged into your account</div>
+                {/* 음식 설명 */}
+                <div className="md:flex mb-6">
+                    <div className="md:w-1/3">
+                        <label className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" htmlFor="my-textfield">
+                                음식 설명
+                        </label>
+                    </div>
+                 <div className="md:w-2/3">
+                    <input   ref={descriptionInputRef} id="message" name='description' className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="음식 설명" required />
+                 </div>
+                </div>
+
+                {/* 카테고리 설정 */}
+                <div className="md:flex mb-6">
+                        <div className="md:w-1/3">
+                            <label className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" htmlFor="my-select">
+                                카테고리
+                            </label>
+                        </div>
+                        <div className="md:w-2/3">
+                            <select className="form-select block w-full focus:bg-white" id="my-select" ref={categoryInputRef}
+                            type="text"
+                            name="category">
+                                <option value="KOREAN">한식</option>
+                                <option value="WESTERN">양식</option>
+                                <option value="JAPANESE">일식</option>
+                                <option value="CHINESE">일식</option>
+                            </select>
+
+                            <p className="py-2 text-sm text-gray-400">음식의 종류를 선택해 주세요.</p>
+                        </div>
                     </div>
 
-               
-                    <div className="relative z-0 mb-6 w-full group">
-                        <input  ref={categoryInputRef}
-                            type="text"
-                            name="category" id="floating_email" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                        <label  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">카테고리</label>
-                     </div>
 
-                    <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" htmlFor='file_input' >Upload file</label>
-                    <input className="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
-                     type="file" id="file_input"
+               {/* 메인 사진 업로드 */}
+               <div className="md:flex mb-6">
+                        <div className="md:w-1/3">
+                            <label className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" htmlFor="my-textarea">
+                                메인 이미지
+                            </label>
+                        </div>
+                        
+                        <div className="md:w-2/3">
+                            <input className="mb-3 md:mb-0 pr-4 block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+                                 type="file" id="mainImage_input"
                             name="images"
-                            accept="image/*"  onChange={onChangeImg}/>
-                    <div className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="user_avatar_help">A profile picture is useful to confirm your are logged into your account</div>
+                            accept="image/*"ref={mainImageRef}/>   
+                        </div>
+                    </div>
+                   
+                  {/* 재료 및 재료 별 양 */}
+                  <div className="md:flex mb-6">
+                        <div className="md:w-1/3">
+                            <label className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" htmlFor="my-textarea">
+                                재료 및 양
+                            </label>
+                            </div>
+                        
+                        <div className="md:w-2/3">
+                            <table className="table-fixed md:w-3/3">
+                            <thead>
+                                <tr>
+                                <th>재료</th>
+                                <th>양</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input  ref={ingredientInputRef} type="text" name="ingredient" placeholder='재료를 입력하세요'></input></td>
+                                    <td><input ref={ingredientAmountInputRef} type="text" name="ingredientAmount" placeholder='양을 입력하세요'></input></td>
+                                    </tr>
+                            {/* 클릭하면 tr창이 하나씩 더  생기도록 구현 */}
+                            </tbody>
+                        </table> 
+                        <AddListsIcon className='flex items-center' width={30} height={30} onClick={addCookingHandler}/>
+
+                        </div>
                     </div>
 
-                    <div className="relative z-0 mb-6 w-full group">
-                        <input   ref={imageDescriptionsInputRef}
-                            type="text"
-                            name="imageDescriptions" id="floating_email" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                        <label  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">이미지 설명</label>
-                     </div>
-                    
-                    <div className="relative z-0 mb-6 w-full group">
-                        <input   ref={ingredientInputRef}
-                            type="text"
-                            name="ingredient" id="floating_email" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                        <label  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">재료</label>
-                     </div>
+                   {/* 레시피 설명 업로드 */}
+                   <div className="md:flex mb-6">
+                        <div className="md:w-1/3">
+                            <label className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" htmlFor="my-textarea">
+                                레시피 세부 내용
+                            </label>
+                        </div>
+    
+                        <div className="md:w-2/3">
+                            {!addCookingProcess && <AddListsIcon className='flex items-center' width={30} height={30} onClick={addCookingHandler}/> }
+                            {addCookingProcess && 
+                            <div>
+                                <input className="mb-3 md:mb-0 pr-4 block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+                                 type="file" id="recipeImage_input" name="images" accept="image/*"ref={mainImageRef} onChange={onChangeImg}/> 
+                        
+                                <div className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="user_avatar_help">각 단계에 해당하는 이미지를 첨부해 주세요</div>
+                        
+                                <div className="relative z-0 mb-6 w-full group">
+                                    <input ref={imageDescriptionsInputRef} type="text" name="imageDescriptions"  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="레시피 설명"/>
+                                    <AddListsIcon className='flex items-center' width={30} height={30} onClick={addCookingHandler}/>
+                                </div> 
+                            </div>
+                             }
+                         </div>
+                        </div>       
+                    </div>            
 
-                     <div className="relative z-0 mb-6 w-full group">
-                        <input     ref={ingredientAmountInputRef}
-                            type="text"
-                            name="ingredientAmount" id="floating_email" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                        <label  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">재료별 양</label>
-                     </div>
-
-                
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">레시피 설명</label>
-                    <input ref={descriptionInputRef} id="message" name='description'  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Leave a comment..."/>설명
-                </div> 
-                <button className='inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2' type='submit'>등록</button> 
-            </form>
-        </>
+                    <div className="md:flex md:items-center">
+                        <div className="md:w-1/3"></div>
+                        <div className="space-x-4 md:w-2/3">
+                            <button className="shadow bg-red-300 hover:bg-red-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type='submit' onClick={clickedToggle}>
+                                {!toggle? "등록" : "수정" }
+                            </button>
+                            <button className=" shadow bg-red-200 hover:bg-red-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type='button'>
+                                취소
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+    
     );
 
 };
 
 export default NewRecipeForm;
-
-
 
 // const uploadFile = async (file:any) => {
 //     const formData = new FormData()
