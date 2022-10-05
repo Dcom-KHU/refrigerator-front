@@ -6,6 +6,7 @@ import {
     invalidTryingState,
 } from '../../store/myRefrigerStates';
 import AddIngrediantModal from '../modal/AddIngrediantModal';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
 const AddIngrediant = () => {
     const [showModal, setShowModal] = useState(false);
@@ -52,10 +53,17 @@ const AddIngrediant = () => {
             )}
             <div
                 ref={divRef}
-                className="flex flex-col absolute justify-center items-center w-full h-14 bottom-0 rounded-b-xl"
+                className="flex absolute justify-center items-center w-full h-14 mb-5 bottom-0 rounded-b-xl"
             >
-                <div className="sticky self-center rounded-full -mt-5 bg-[#303136] hover:bg-[#3c3e44] cursor-pointer z-50">
-                    <Plus width={45} height={45} onClick={onClick} />
+                <div className="sticky rounded-full bg-[#303136] hover:bg-[#3c3e44] cursor-pointer">
+                    <Plus width={50} height={50} onClick={onClick} />
+                </div>
+                <div className="flex absolute justify-center items-center w-32 sm:w-48 h-10 left-[60%] sm:left-[80%] bg-gradient-to-r from-[rgba(238,174,202,1)] to-[rgba(148,187,233,1)] font-medium text-xs sm:text-base rounded-3xl cursor-pointer">
+                    내 재료로 요리하기
+                    <KeyboardDoubleArrowRightIcon
+                        className="ml-[5px] animate-sideMove"
+                        fontSize="small"
+                    />
                 </div>
             </div>
         </>

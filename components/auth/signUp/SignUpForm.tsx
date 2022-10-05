@@ -6,6 +6,7 @@ import axios from '../../../util/axios';
 import SetUserInfo from './SetUserInfo';
 import SetUserName from './SetUserName';
 import { AxiosError } from 'axios';
+import { signUp } from '../../../util/auth';
 
 const SignUpForm = () => {
     const router = useRouter();
@@ -20,61 +21,24 @@ const SignUpForm = () => {
 
     const setUser = useSetRecoilState(userState);
     const setIsAuthed = useSetRecoilState(isAuthedState);
+
     const checkIsValid = useCallback(() => {
         return emailIsValid && pwdIsValid && nickNameIsValid;
     }, [emailIsValid, pwdIsValid, nickNameIsValid]);
 
-    const signUp = async (
-        email: string,
-        password: string,
-        name: string,
-        nickname: string
-    ) => {
-        try {
-            const res = await axios({
-                method: 'POST',
-                url: '/user/join',
-                data: { email, name, nickname, password },
-            });
-            if (200 <= res.status && res.status < 300) {
-                const {
-                    email,
-                    password,
-                    name,
-                    nickname,
-                    point,
-                    notificationFood,
-                    notificationRefrigerator,
-                    id,
-                } = res.data;
-                setUser({
-                    email,
-                    password,
-                    name,
-                    nickname,
-                    point,
-                    notificationFood,
-                    notificationRefrigerator,
-                    id,
-                });
-                router.push('/');
-                setIsAuthed(true);
-            } else throw new Error();
-        } catch (err) {
-            const error = err as AxiosError;
-            if (error.response?.status == 400) {
-                alert('이미 존재하는 이메일입니다.');
-            }
-        }
-    };
 
-    const onSubmit = (event: React.SyntheticEvent) => {
+    const onSubmit = async (event: React.SyntheticEvent) => {
         event.preventDefault();
         if (!checkIsValid()) {
             alert('올바르지 않은 형식입니다.');
             return;
         }
-        signUp(email, pwd, name, nickName);
+        const user = await signUp(email, pwd, name, nickName);
+        if (user) {
+            setUser(user);
+            setIsAuthed(true);
+            router.replace('/');
+        }
     };
 
     useEffect(() => {
@@ -118,4 +82,5 @@ const SignUpForm = () => {
         </>
     );
 };
+
 export default SignUpForm;

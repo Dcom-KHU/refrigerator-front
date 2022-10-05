@@ -9,7 +9,7 @@ const Header: NextPage = () => {
     const [menuToggle, setMenuToggle] = useState(false);
 
     return (
-        <nav className="fixed w-full z-10 pin-t bg-gray-100">
+        <nav className="fixed w-full z-40 pin-t bg-gray-100">
             <div className="max-w-6xl mx-auto px-4">
                 <div className="flex space-x-4">
                     {/* 메뉴 */}

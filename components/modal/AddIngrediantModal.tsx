@@ -1,12 +1,14 @@
 import React, { useState, SetStateAction } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { myIngrediants } from '../../store/myIngrediants';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import {
     isModifyingState,
     justAddedState,
     invalidTryingState,
 } from '../../store/myRefrigerStates';
-import { v1 } from 'uuid';
+import { userState } from '../../store/authState';
+import { addIngredient, fetchIngredients } from '../../util/myRefriger';
+import { myIngrediants } from '../../store/myIngrediants';
+
 interface propType {
     isShow: boolean;
     setIsShow: React.Dispatch<SetStateAction<boolean>>;
@@ -15,30 +17,25 @@ interface propType {
 
 //재료 추가 or 수정시 나오는 모달
 const AddIngrediantModal = (props: propType) => {
-    const [data, setData] = useRecoilState(myIngrediants);
-    const setIsModifying = useSetRecoilState(isModifyingState);
     const [name, setName] = useState('');
-    const [bb, setBB] = useState(new Date().toJSON().split('T')[0]);
+    const [expiredDate, setExpiredDate] = useState(
+        new Date().toJSON().split('T')[0]
+    );
+    const user = useRecoilValue(userState);
+    const setData = useSetRecoilState(myIngrediants);
+    const setIsModifying = useSetRecoilState(isModifyingState);
     const setJustAdded = useSetRecoilState(justAddedState);
     const setInvalidTrying = useSetRecoilState(invalidTryingState);
 
     const Reset = () => {
         setName('');
-        setBB(new Date().toJSON().split('T')[0]);
+        setExpiredDate(new Date().toJSON().split('T')[0]);
     };
 
-    const onSubmit = () => {
-        try {
-            if (name.trim() == '') throw new Error('잘못된 이름입니다.');
-            //추가버튼 눌렀을 때
-            const id = v1();
-            const newIngrediant = {
-                id,
-                name,
-                bb,
-            };
-            //새로운 재료 데이터에 추가
-            setData([...data, newIngrediant]);
+    const onSubmit = async (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        if (await addIngredient(name, expiredDate, user!.id)) {
+            setData(await fetchIngredients(user));
             Reset();
             props.setIsShow(false);
             setIsModifying(false);
@@ -46,13 +43,11 @@ const AddIngrediantModal = (props: propType) => {
             setTimeout(() => {
                 props.setShowModal(false);
             }, 200);
-        } catch (err) {
-            alert(err);
         }
     };
 
     const unMount = () => {
-        //모달 사라질 때 애니메이션용 setTimeout
+        //모달 사라질 때 애니메이션용
         Reset();
         props.setIsShow(false);
         setIsModifying(false);
@@ -66,7 +61,7 @@ const AddIngrediantModal = (props: propType) => {
         <div
             className={`${
                 props.isShow ? 'animate-fadeIn' : 'animate-fadeOut'
-            } flex absolute flex-col justify-around items-center w-2/3 h-1/3 top-16 left-[16%] border-[0.5px] border-[#8a8a8a] rounded-3xl bg-[#d3d3d3] shadow-3xl z-50`}
+            } flex absolute flex-col justify-around items-center w-[70%] sm:w-1/2 h-[150px] sm:left-[25%] top-[35%] border-solid border-[1.5px] border-[#8a8a8a] rounded-3xl bg-white shadow-3xl z-50`}
         >
             <form onSubmit={onSubmit}>
                 <div className="flex justify-around items-center -mt-4">
@@ -77,16 +72,16 @@ const AddIngrediantModal = (props: propType) => {
                         }}
                         placeholder="재료명"
                         required
-                        className="relative w-1/3 py-3 rounded-2xl outline-none text-center focus:placeholder-transparent"
+                        className="relative w-1/3 py-3 rounded-2xl border-[#8a8a8a] border-[1px] outline-none text-center focus:placeholder-transparent"
                     ></input>
                     <input
-                        value={bb}
+                        value={expiredDate}
                         type="date"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setBB(e.target.value);
+                            setExpiredDate(e.target.value);
                         }}
                         placeholder="유통기한"
-                        className="relative w-1/2 py-3 rounded-2xl outline-none text-center cursor-pointer focus:placeholder-transparent"
+                        className="relative w-1/2 py-3 rounded-2xl border-[#8a8a8a] border-[1px] outline-none text-center cursor-pointer focus:placeholder-transparent"
                     ></input>
                 </div>
                 <div className="flex justify-center items-end mt-4 -mb-10 text-white">

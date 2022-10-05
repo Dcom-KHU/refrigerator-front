@@ -2,32 +2,27 @@ import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { myRefSearchState } from '../../store/myRefrigerStates';
 import MyIngrediantsCard from './MyIngrediantsCard';
-import AddIngrediant from './AddIngrediant';
 import MyRefSelect from './MyRefSelect';
-
-interface dataType {
-    id: string;
-    name: string;
-    bb: string;
-}
+import AddIngrediant from './AddIngrediant';
+import { ingredient } from '../../types/recipetype';
 
 interface propType {
-    data: dataType[];
+    data: ingredient[];
 }
 
 const MyIngrediantsList = ({ data }: propType) => {
     const [selected, setSelected] = useState(false);
     const keyword = useRecoilValue(myRefSearchState);
 
-    const isDangerous = (today: Date, bb: string): boolean => {
+    const isDangerous = (today: Date, expiredDate: string): boolean => {
         //유통기한이 3일 이하로 남았는지 확인
-        const diff = new Date(bb).getTime() - today.getTime();
+        const diff = new Date(expiredDate).getTime() - today.getTime();
         return diff / (1000 * 60 * 60 * 24) <= 3;
     };
 
     return (
         <>
-            <div className="flex relative flex-col self-center w-full h-3/4">
+            <div className="flex flex-col self-center w-full h-3/4">
                 <MyRefSelect selected={selected} setSelected={setSelected} />
                 <ul className="flex flex-wrap justify-around sm:justify-start content-start w-full h-[95%] bg-white border-[#9d9d9d] border-[1px] border-t-0 rounded-b-xl overflow-y-scroll">
                     {!selected && //나의 냉장고 선택했을 때
@@ -36,7 +31,7 @@ const MyIngrediantsList = ({ data }: propType) => {
                                 item.name.includes(keyword) && ( //input내에 값을 포함하는 item만 출력
                                     <li
                                         key={item.id}
-                                        className="w-[100px] h-[100px] md:w-[150px] md:h-[150px] m-2"
+                                        className="w-[100px] h-[100px] md:w-[160px] md:h-[160px] m-3"
                                     >
                                         <MyIngrediantsCard
                                             item={item}
@@ -48,7 +43,7 @@ const MyIngrediantsList = ({ data }: propType) => {
                                 //input값이 없을경우 전체 출력
                                 <li
                                     key={item.id}
-                                    className="w-[100px] h-[100px] md:w-[150px] md:h-[150px] m-3"
+                                    className="w-[100px] h-[100px] md:w-[160px] md:h-[160px] m-3"
                                 >
                                     <MyIngrediantsCard
                                         item={item}
@@ -60,14 +55,14 @@ const MyIngrediantsList = ({ data }: propType) => {
                     {selected && //유통기한 임박 체크 했을 때 유통기한 3일이하인것만 filter 후 map
                         data
                             .filter((items) =>
-                                isDangerous(new Date(), items.bb)
+                                isDangerous(new Date(), items.expiredDate)
                             )
                             .map((item) =>
                                 keyword != '' ? (
                                     item.name.includes(keyword) && (
                                         <li
                                             key={item.id}
-                                            className="w-[100px] h-[100px] md:w-[150px] md:h-[150px] m-3"
+                                            className="w-[100px] h-[100px] md:w-[160px] md:h-[160px] m-3"
                                         >
                                             <MyIngrediantsCard
                                                 item={item}
@@ -78,7 +73,7 @@ const MyIngrediantsList = ({ data }: propType) => {
                                 ) : (
                                     <li
                                         key={item.id}
-                                        className="w-[100px] h-[100px] md:w-[150px] md:h-[150px] m-3"
+                                        className="w-[100px] h-[100px] md:w-[160px] md:h-[160px] m-3"
                                     >
                                         <MyIngrediantsCard
                                             item={item}

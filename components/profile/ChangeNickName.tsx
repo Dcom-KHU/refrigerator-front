@@ -1,40 +1,28 @@
-import { useState, useEffect, useCallback } from 'react';
-import type { GetServerSideProps } from 'next';
-import { stayLogin } from '../../util/auth';
+import React, { useState, useEffect, useCallback } from 'react';
 import { userState } from '../../store/authState';
 import { useRecoilState } from 'recoil';
 
 const ChangeNickName = () => {
     const [user, setUser] = useRecoilState(userState);
-    const [newName, setNewName] = useState(user.nickname);
+    const [newName, setNewName] = useState<string>();
+
     const [isEditting, setIsEditting] = useState(false);
     const [isValid, setIsValid] = useState(true);
 
     const checkIsValid = useCallback(() => {
-        newName && 2 <= newName!.length && newName!.length <= 8
-            ? setIsValid(true)
-            : setIsValid(false);
+        if (newName && 2 <= newName.length && newName.length <= 8)
+            setIsValid(true);
+        else setIsValid(false);
     }, [newName]);
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setNewName(event.target.value);
-    };
-
-    const onClick = () => {
-        if (isValid) {
-            setIsEditting((prev) => !prev);
-        }
-    };
-
-    const cancel = () => {
+    useEffect(() => {
+        if (user === null) return;
         setNewName(user.nickname);
-        setIsEditting(false);
-    };
+    }, [user]);
 
     useEffect(() => {
-        setNewName(user.nickname);
         checkIsValid();
-    }, [checkIsValid, user]);
+    }, [checkIsValid]);
 
     return (
         <>
@@ -42,8 +30,12 @@ const ChangeNickName = () => {
                 {isEditting ? (
                     <>
                         <input
-                            value={newName as string}
-                            onChange={onChange}
+                            value={newName}
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
+                                setNewName(e.target.value);
+                            }}
                             className={`ml-10 py-3 px-2 w-1/5 border-none rounded-lg outline ${
                                 isValid
                                     ? 'outline-1 outline-[#d3d3d3]'
@@ -51,13 +43,18 @@ const ChangeNickName = () => {
                             }`}
                         ></input>
                         <button
-                            onClick={cancel}
+                            onClick={() => {
+                                user && setNewName(user.nickname);
+                                setIsEditting(false);
+                            }}
                             className="py-2 px-3 text-sm border-[1px] border-solid border-[#d3d3d3] rounded-[10px] cursor-pointer ml-4 text-[#222222cc]"
                         >
                             취소
                         </button>
                         <button
-                            onClick={onClick}
+                            onClick={() => {
+                                isValid && setIsEditting((prev) => !prev);
+                            }}
                             className="py-2 px-3 text-sm border-[1px] border-solid border-[#d3d3d3] rounded-[10px] cursor-pointer ml-4 text-[#222222cc]"
                         >
                             저장
@@ -66,17 +63,18 @@ const ChangeNickName = () => {
                 ) : (
                     <>
                         <span className="ml-10 text-lg font-semibold">
-                            {user.nickname}
+                            {user && user.nickname}
                         </span>
                         <button
-                            onClick={onClick}
+                            onClick={() => {
+                                isValid && setIsEditting((prev) => !prev);
+                            }}
                             className="py-2 px-3 text-sm border-[1px] border-solid border-[#d3d3d3] rounded-[10px] cursor-pointer ml-4 text-[#222222cc]"
                         >
                             변경
                         </button>
                     </>
                 )}
-
                 {!isValid && (
                     <span className="ml-3 text-xs text-red-500">
                         올바른 닉네임을 입력해주세요. (2~8자)
@@ -88,8 +86,3 @@ const ChangeNickName = () => {
 };
 
 export default ChangeNickName;
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    stayLogin(ctx);
-    return { props: {} };
-};

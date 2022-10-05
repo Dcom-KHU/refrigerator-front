@@ -1,29 +1,20 @@
 import { atom } from 'recoil';
 import { v1 } from 'uuid';
 
-export interface User {
-    email: string | null;
-    id: number | null;
-    name: string | null;
-    nickname: string | null;
-    notificationFood: boolean | null;
-    notificationRefrigerator: boolean | null;
-    password: string | null;
-    point: number | null;
+export interface UserType {
+    email: string;
+    id: number;
+    name: string;
+    nickname: string;
+    notificationFood: boolean;
+    notificationRefrigerator: boolean;
+    password: string;
+    point: number;
 }
 
-export const userState = atom<User>({
+export const userState = atom<UserType | null>({
     key: `userState/${v1()}`,
-    default: {
-        email: null,
-        id: null,
-        name: null,
-        nickname: null,
-        notificationFood: null,
-        notificationRefrigerator: null,
-        password: null,
-        point: null,
-    },
+    default: null,
 });
 
 export const isAuthedState = atom<boolean>({
