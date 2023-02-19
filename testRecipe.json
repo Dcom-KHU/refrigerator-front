@@ -1,0 +1,52 @@
+{
+    "id": 1,
+    "writer": {
+        "id": 1,
+        "nickname": "김민기",
+        "eamil": "sweun1@naver.com"
+    },
+    "name": "민기표 계란 후라이",
+    "description": "맛남의 광장 백종원 선생님의 레시피를 유병재 스타일로 간단하게 만든 닭볶음!\n닭볶음탕보다 만들기도 쉽고, 단짠단짠 양념도 잘 배어있어서\n밥반찬으로도 너무 좋아요 :)",
+    "mainImage": "url",
+    "category": "KOREAN",
+    "food": [
+        {
+            "ingredient": "계란",
+            "amount": "한 알"
+        },
+        {
+            "ingredient": "소금",
+            "amount": "반 숟갈"
+        },
+        {
+            "ingredient": "계란",
+            "amount": "한 알"
+        },
+        {
+            "ingredient": "소금",
+            "amount": "반 숟갈"
+        },
+        {
+            "ingredient": "계란",
+            "amount": "한 알"
+        },
+        {
+            "ingredient": "소금",
+            "amount": "반 숟갈"
+        }
+    ],
+    "images": [
+        {
+            "id": 1,
+            "originFileName": "파일 명",
+            "filePath": "/food2.jpeg",
+            "description": "예스"
+        },
+        {
+            "id": 2,
+            "originFileName": "파일 명",
+            "filePath": "/food3.jpeg",
+            "description": "예스"
+        }
+    ]
+}
