@@ -1,7 +1,7 @@
 import KakaoImg from '/public/logo_kakao.svg';
 import Link from 'next/link';
 
-const KakaoLoginUrl = 'http://20.38.46.151:8080/oauth2/authorization/kakao';
+const KakaoLoginUrl = 'http://localhost:8080/oauth2/authorization/kakao';
 
 const KakaoLogin = () => {
     return (

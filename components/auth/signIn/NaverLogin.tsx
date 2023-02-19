@@ -2,7 +2,7 @@ import React from 'react';
 import NaverSVG from '/public/logo_naver.svg';
 import Link from 'next/link';
 
-const NaverLoginUrl = 'http://20.38.46.151:8080/oauth2/authorization/naver';
+const NaverLoginUrl = 'http://localhost:8080/oauth2/authorization/naver';
 
 const NaverLogin = () => {
     return (
